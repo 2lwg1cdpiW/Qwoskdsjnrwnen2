@@ -170,13 +170,13 @@ function Window:Title(Title)
     ToggleContainer.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
     ToggleContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ToggleContainer.BorderSizePixel = 0
-    ToggleContainer.Size = UDim2.new(0, 150, 0, 30)
+    ToggleContainer.Size = UDim2.new(0, 144, 0, 30)
     ToggleContainer.LayoutOrder = 1
 
 	local uiStroke = Instance.new("UIStroke")
 	uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Stroke applied to the border
 	uiStroke.Color = Color3.fromRGB(255, 255, 255) -- Stroke color (red)
-	uiStroke.Thickness = 2 -- Stroke thickness
+	uiStroke.Thickness = 1 -- Stroke thickness
 	uiStroke.Parent = ToggleContainer
 
     -- Create the TextLabel for the toggle title
@@ -199,7 +199,7 @@ function Window:Title(Title)
     ToggleButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ToggleButton.BorderSizePixel = 2 -- Outline when not toggled
     ToggleButton.BackgroundTransparency = 1
-    ToggleButton.Size = UDim2.new(0, 30, 1, 0)
+    ToggleButton.Size = UDim2.new(0, 20, 1, 0)
     ToggleButton.Position = UDim2.new(1, -35, 0, 0) -- Positioned to the right
     ToggleButton.Font = Enum.Font.SourceSans
     ToggleButton.Text = ""
