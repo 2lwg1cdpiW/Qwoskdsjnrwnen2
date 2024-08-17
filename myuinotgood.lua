@@ -36,7 +36,7 @@ function Window:Title(Title)
 		Frame.BorderSizePixel = 0
 		Frame.Position = UDim2.new(0, 0, 0.966666639, 0)
 		Frame.Size = UDim2.new(0, 150, 0, 200)
-		Frame.ScrollBarThickness = 10
+		Frame.ScrollBarThickness = 3
 		
 		-- Add the UIListLayout to the Frame
 		UIListLayout.Parent = Frame
