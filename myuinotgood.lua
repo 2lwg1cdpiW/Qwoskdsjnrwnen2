@@ -175,7 +175,7 @@ function Elements:AddToggle(Name, Call)
     local uiStroke = Instance.new("UIStroke")
     uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Stroke applied to the border
     uiStroke.Color = Color3.fromRGB(255, 255, 255) -- Stroke color (white)
-    uiStroke.Thickness = 1 -- Stroke thickness
+    uiStroke.Thickness = 2 -- Stroke thickness
     uiStroke.Parent = ToggleContainer
 
     -- Create the TextLabel for the toggle title
@@ -194,7 +194,7 @@ function Elements:AddToggle(Name, Call)
     -- Create the toggle button
     local ToggleButton = Instance.new("TextButton")
     ToggleButton.Parent = ToggleContainer
-    ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleButton.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
     ToggleButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ToggleButton.BorderSizePixel = 2 -- Outline when not toggled
     ToggleButton.BackgroundTransparency = 1
@@ -202,7 +202,7 @@ function Elements:AddToggle(Name, Call)
     ToggleButton.Position = UDim2.new(0, 113, 0, 2) -- Positioned to the right
     ToggleButton.Font = Enum.Font.SourceSans
     ToggleButton.Text = ""
-    ToggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
     local UICornerButton = Instance.new("UICorner")
     UICornerButton.CornerRadius = UDim.new(0, 6)
@@ -239,6 +239,30 @@ function Elements:AddToggle(Name, Call)
     }
 end
 
+  function Elements:AddTextBox(Name, Call)
+    local TextBox = Instance.new("TextBox")
+    TextBox.Parent = Frame
+    TextBox.BorderColor3 = Color3.fromRGB(91, 91, 91)
+    TextBox.Size = UDim2.new(0, 144, 0, 30)
+    TextBox.PlaceholderText = Name
+    TextBox.PlaceholderColor3 = Color3.fromRGB(255, 255, 255) -- Sets the placeholder text color to white
+    TextBox.TextColor3 = Color3.fromRGB(255, 255, 255) -- Sets the text color to white
+    TextBox.BackgroundColor3 = Color3.fromRGB(44, 44, 44) -- Background color for better visibility
+    TextBox.TextSize = 16 -- Adjust text size as needed
+    TextBox.Font = Enum.Font.SourceSans -- Font style
+
+    local UICorner = Instance.new("UICorner")
+    UICorner.CornerRadius = UDim.new(0, 3)
+    UICorner.Parent = TextBox
+
+    TextBox.FocusLost:Connect(function(enterPressed)
+        if enterPressed then
+            pcall(Call, TextBox.Text) -- Call the provided function with the input text
+        end
+    end)
+end
+	
+	
     return Elements
 end
 
