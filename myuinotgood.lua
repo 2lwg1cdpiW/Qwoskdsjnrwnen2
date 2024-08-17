@@ -165,13 +165,13 @@ function Window:Title(Title)
     -- Function to create toggle buttons inside the frame
     function Elements:AddToggle(Name, Call)
     -- Create the container frame for the toggle
-    local ToggleContainer = Instance.new("Frame")
-    ToggleContainer.Parent = Frame
-    ToggleContainer.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
-    ToggleContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ToggleContainer.BorderSizePixel = 0
-    ToggleContainer.Size = UDim2.new(0, 144, 0, 30)
-    ToggleContainer.LayoutOrder = 1
+		local ToggleContainer = Instance.new("Frame")
+		ToggleContainer.Parent = Frame
+		ToggleContainer.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
+		ToggleContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		ToggleContainer.BorderSizePixel = 0
+		ToggleContainer.Size = UDim2.new(0, 144, 0, 30)
+		ToggleContainer.LayoutOrder = 1
 
 	local uiStroke = Instance.new("UIStroke")
 	uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Stroke applied to the border
@@ -199,8 +199,8 @@ function Window:Title(Title)
     ToggleButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ToggleButton.BorderSizePixel = 2 -- Outline when not toggled
     ToggleButton.BackgroundTransparency = 1
-    ToggleButton.Size = UDim2.new(0, 20, 1, 0)
-    ToggleButton.Position = UDim2.new(1, -35, 0, 0) -- Positioned to the right
+    ToggleButton.Size = UDim2.new(0, 26, 26, 26)
+    ToggleButton.Position = UDim2.new(, 113, 0, 2) -- Positioned to the right
     ToggleButton.Font = Enum.Font.SourceSans
     ToggleButton.Text = ""
     ToggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
