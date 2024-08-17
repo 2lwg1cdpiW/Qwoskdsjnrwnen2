@@ -142,12 +142,12 @@ function Window:Title(Title)
     function Elements:AddButton(Name, Call)
         local TextButton = Instance.new("TextButton")
         TextButton.Parent = Frame
-        TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        TextButton.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
         TextButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
         TextButton.BorderSizePixel = 0
         TextButton.Size = UDim2.new(0, 145, 0, 30)
         TextButton.Font = Enum.Font.SourceSans
-        TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+        TextButton.TextColor3 = Color3.fromRGB(220, 220, 220)
         TextButton.Text = Name
         TextButton.TextSize = 16
         TextButton.Font = Enum.Font.GothamBold
@@ -173,8 +173,8 @@ function Elements:AddToggle(Name, Call)
 
     local uiStroke = Instance.new("UIStroke")
     uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Stroke applied to the border
-    uiStroke.Color = Color3.fromRGB(255, 255, 255) -- Stroke color (white)
-    uiStroke.Thickness = 0.6 -- Stroke thickness
+    uiStroke.Color = Color3.fromRGB(220, 220, 220) -- Stroke color (white)
+    uiStroke.Thickness = 0.3 -- Stroke thickness
     uiStroke.Parent = ToggleContainer
 
     -- Create the TextLabel for the toggle title
@@ -185,7 +185,7 @@ function Elements:AddToggle(Name, Call)
     TitleLabel.Size = UDim2.new(0, 100, 1, 0)
     TitleLabel.Position = UDim2.new(0, 0, 0, 0)
     TitleLabel.Font = Enum.Font.SourceSans
-    TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLabel.TextColor3 = Color3.fromRGB(220, 220, 220)
     TitleLabel.Text = Name
     TitleLabel.TextSize = 16.000
     TitleLabel.Font = Enum.Font.GothamBold
@@ -201,7 +201,7 @@ function Elements:AddToggle(Name, Call)
     ToggleButton.Position = UDim2.new(0, 113, 0, 2) -- Positioned to the right
     ToggleButton.Font = Enum.Font.SourceSans
     ToggleButton.Text = ""
-    ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleButton.TextColor3 = Color3.fromRGB(220, 220, 220)
 
     local UICornerButton = Instance.new("UICorner")
     UICornerButton.CornerRadius = UDim.new(0, 6)
@@ -245,10 +245,10 @@ function Elements:AddTextBox(Name, Call)
     TextBox.Size = UDim2.new(0, 144, 0, 30)
     TextBox.PlaceholderText = Name
     TextBox.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
-    TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextBox.TextColor3 = Color3.fromRGB(220, 220, 220)
     TextBox.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
     TextBox.TextSize = 16
-    TextBox.Font = Enum.Font.SourceSans
+    TextBox.Font = Enum.Font.GothamBold
 
     local UICorner = Instance.new("UICorner")
     UICorner.CornerRadius = UDim.new(0, 3)
@@ -256,8 +256,8 @@ function Elements:AddTextBox(Name, Call)
     
     local uiStroke2 = Instance.new("UIStroke")
     uiStroke2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    uiStroke2.Color = Color3.fromRGB(255, 255, 255)
-    uiStroke2.Thickness = 0.6
+    uiStroke2.Color = Color3.fromRGB(220, 220, 220)
+    uiStroke2.Thickness = 0.3
     uiStroke2.Parent = TextBox
 
     TextBox.FocusLost:Connect(function(enterPressed)
