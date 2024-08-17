@@ -29,20 +29,31 @@ function Window:Title(Title)
     UICorner.CornerRadius = UDim.new(0, 2)
     UICorner.Parent = TextLabel
 
-    Frame.Parent = TextLabel
-    Frame.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
-    Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Frame.BorderSizePixel = 0
-    Frame.Position = UDim2.new(0, 0, 0.966666639, 0)
-    Frame.Size = UDim2.new(0, 150, 0, 200)
-
-    UIListLayout.Parent = Frame
-    UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    UIListLayout.Padding = UDim.new(0, 3)
-
-    UICorner_2.CornerRadius = UDim.new(0, 3)
-    UICorner_2.Parent = Frame
+		-- Setup the ScrollingFrame
+		Frame.Parent = TextLabel
+		Frame.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
+		Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Frame.BorderSizePixel = 0
+		Frame.Position = UDim2.new(0, 0, 0.966666639, 0)
+		Frame.Size = UDim2.new(0, 150, 0, 200)
+		Frame.ScrollBarThickness = 10
+		
+		-- Add the UIListLayout to the Frame
+		UIListLayout.Parent = Frame
+		UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+		UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+		UIListLayout.Padding = UDim.new(0, 3)
+		
+		-- Function to update CanvasSize based on UIListLayout size
+		local function updateCanvasSize()
+		    Frame.CanvasSize = UDim2.new(0, 150, 0, Frame.UIListLayout.AbsoluteContentSize.Y)
+		end
+		
+		-- Update CanvasSize whenever UIListLayout's content size changes
+		UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateCanvasSize)
+		
+		-- Initial CanvasSize setup
+		updateCanvasSize()
 
     TextButton_2.Parent = TextLabel
     TextButton_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -174,7 +185,7 @@ function Elements:AddToggle(Name, Call)
     local uiStroke = Instance.new("UIStroke")
     uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Stroke applied to the border
     uiStroke.Color = Color3.fromRGB(220, 220, 220) -- Stroke color (white)
-    uiStroke.Thickness = 0.5 -- Stroke thickness
+    uiStroke.Thickness = 0.3 -- Stroke thickness
     uiStroke.Parent = ToggleContainer
 
     -- Create the TextLabel for the toggle title
@@ -257,7 +268,7 @@ function Elements:AddTextBox(Name, Call)
     local uiStroke2 = Instance.new("UIStroke")
     uiStroke2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     uiStroke2.Color = Color3.fromRGB(220, 220, 220)
-    uiStroke2.Thickness = 0.5
+    uiStroke2.Thickness = 0.3
     uiStroke2.Parent = TextBox
 
     TextBox.FocusLost:Connect(function(enterPressed)
