@@ -163,46 +163,22 @@ function Window:Title(Title)
     
     -- Function to create toggle buttons inside the frame
 function Elements:AddToggle(Name, Call)
--- Update AddButton
-function Elements:AddButton(Name, Call)
-    local TextButton = Instance.new("TextButton")
-    TextButton.Parent = Frame
-    TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TextButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    TextButton.BorderSizePixel = 0
-    TextButton.Size = UDim2.new(0, 145, 0, 30)
-    TextButton.Font = Enum.Font.SourceSans
-    TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-    TextButton.Text = Name
-    TextButton.TextSize = 16
-    TextButton.Font = Enum.Font.GothamBold
-    TextButton.LayoutOrder = 1  -- Set LayoutOrder for button
-    
-    local UICorner2 = Instance.new("UICorner")
-    UICorner2.CornerRadius = UDim.new(0, 3)
-    UICorner2.Parent = TextButton
-
-    TextButton.MouseButton1Click:Connect(function()
-        pcall(Call)
-    end)
-end
-
--- Update AddToggle
-function Elements:AddToggle(Name, Call)
+    -- Create the container frame for the toggle
     local ToggleContainer = Instance.new("Frame")
     ToggleContainer.Parent = Frame
     ToggleContainer.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
     ToggleContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ToggleContainer.BorderSizePixel = 0
     ToggleContainer.Size = UDim2.new(0, 144, 0, 30)
-    ToggleContainer.LayoutOrder = 2  -- Set LayoutOrder for toggle
+    ToggleContainer.LayoutOrder = 1
 
     local uiStroke = Instance.new("UIStroke")
-    uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    uiStroke.Color = Color3.fromRGB(255, 255, 255)
-    uiStroke.Thickness = 2
+    uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Stroke applied to the border
+    uiStroke.Color = Color3.fromRGB(255, 255, 255) -- Stroke color (white)
+    uiStroke.Thickness = 2 -- Stroke thickness
     uiStroke.Parent = ToggleContainer
 
+    -- Create the TextLabel for the toggle title
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.Parent = ToggleContainer
     TitleLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -215,14 +191,15 @@ function Elements:AddToggle(Name, Call)
     TitleLabel.TextSize = 16.000
     TitleLabel.Font = Enum.Font.GothamBold
 
+    -- Create the toggle button
     local ToggleButton = Instance.new("TextButton")
     ToggleButton.Parent = ToggleContainer
     ToggleButton.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
     ToggleButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ToggleButton.BorderSizePixel = 2
+    ToggleButton.BorderSizePixel = 2 -- Outline when not toggled
     ToggleButton.BackgroundTransparency = 1
     ToggleButton.Size = UDim2.new(0, 26, 0, 26)
-    ToggleButton.Position = UDim2.new(0, 113, 0, 2)
+    ToggleButton.Position = UDim2.new(0, 113, 0, 2) -- Positioned to the right
     ToggleButton.Font = Enum.Font.SourceSans
     ToggleButton.Text = ""
     ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -233,24 +210,25 @@ function Elements:AddToggle(Name, Call)
 
     local isToggled = false
 
-    local function updateVisuals()
-        if isToggled then
-            ToggleButton.BackgroundTransparency = 0
-            ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-            ToggleButton.BorderSizePixel = 0
-        else
-            ToggleButton.BackgroundTransparency = 0.5
-            ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-            ToggleButton.BorderSizePixel = 2
-        end
+local function updateVisuals()
+    if isToggled then
+        ToggleButton.BackgroundTransparency = 0
+        ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Green color when toggled
+        ToggleButton.BorderSizePixel = 0 -- Remove border when toggled
+    else
+        ToggleButton.BackgroundTransparency = 0.5
+        ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- White color when not toggled
+        ToggleButton.BorderSizePixel = 2 -- Add border when not toggled
     end
+end
 
     ToggleButton.MouseButton1Click:Connect(function()
         isToggled = not isToggled
         updateVisuals()
-        pcall(Call, isToggled)
+        pcall(Call, isToggled) -- Pass the state to the callback
     end)
 
+    -- Initial visual update
     updateVisuals()
     
     return {
@@ -261,7 +239,6 @@ function Elements:AddToggle(Name, Call)
     }
 end
 
--- Update AddTextBox
 function Elements:AddTextBox(Name, Call)
     local TextBox = Instance.new("TextBox")
     TextBox.Parent = Frame
@@ -279,9 +256,9 @@ function Elements:AddTextBox(Name, Call)
     UICorner.CornerRadius = UDim.new(0, 3)
     UICorner.Parent = TextBox
     
-     local uiStroke2 = Instance.new("UIStroke")
+    local uiStroke2 = Instance.new("UIStroke")
     uiStroke2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    uiStroke.2Color = Color3.fromRGB(255, 255, 255)
+    uiStroke2.Color = Color3.fromRGB(255, 255, 255)
     uiStroke2.Thickness = 2
     uiStroke2.Parent = TextBox
 
