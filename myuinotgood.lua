@@ -8,7 +8,6 @@ function Window:Title(Title)
     local Frame = Instance.new("Frame")
     local UIListLayout = Instance.new("UIListLayout")
     local UICorner_2 = Instance.new("UICorner")
-    local UICorner_3 = Instance.new("UICorner")
     local TextButton_2 = Instance.new("TextButton")
 
     -- Set properties for GUI elements
@@ -24,7 +23,7 @@ function Window:Title(Title)
     TextLabel.Font = Enum.Font.SourceSans
     TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     TextLabel.Text = Title
-    TextLabel.TextSize = 21.000
+    TextLabel.TextSize = 21
     TextLabel.Font = Enum.Font.GothamBold
 
     UICorner.CornerRadius = UDim.new(0, 2)
@@ -41,13 +40,13 @@ function Window:Title(Title)
     UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
     UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     UIListLayout.Padding = UDim.new(0, 3)
-    
+
     UICorner_2.CornerRadius = UDim.new(0, 3)
     UICorner_2.Parent = Frame
 
     TextButton_2.Parent = TextLabel
     TextButton_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TextButton_2.BackgroundTransparency = 1.000
+    TextButton_2.BackgroundTransparency = 1
     TextButton_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TextButton_2.BorderSizePixel = 0
     TextButton_2.Position = UDim2.new(0.8, 0, -0.033, 0)
@@ -56,7 +55,7 @@ function Window:Title(Title)
     TextButton_2.Text = "-"
     TextButton_2.TextColor3 = Color3.fromRGB(254, 254, 254)
     TextButton_2.TextScaled = true
-    TextButton_2.TextSize = 14.000
+    TextButton_2.TextSize = 14
     TextButton_2.TextWrapped = true
 
     local UICorner_Button2 = Instance.new("UICorner")
@@ -104,7 +103,7 @@ function Window:Title(Title)
             end
         end)
     end
-    coroutine.wrap(SmoothDrag)()
+    SmoothDrag()
 
     -- Toggle frame size when the "-" button is clicked
     local toggleState = false
@@ -122,7 +121,7 @@ function Window:Title(Title)
 
         if toggleState then
             -- Expand the frame
-            Frame.Visible = true -- Ensure Frame is visible before expanding
+            Frame.Visible = true
             local tweenExpand = tweenService:Create(Frame, tweenInfo, {Size = expandedSize})
             tweenExpand:Play()
         else
@@ -130,10 +129,10 @@ function Window:Title(Title)
             local tweenCollapse = tweenService:Create(Frame, tweenInfo, {Size = collapsedSize})
             tweenCollapse:Play()
             tweenCollapse.Completed:Connect(function()
-                Frame.Visible = false -- Set Frame to invisible after collapsing
+                Frame.Visible = false
             end)
         end
-        toggleState = not toggleState -- Toggle the state
+        toggleState = not toggleState
     end
 
     TextButton_2.MouseButton1Click:Connect(toggleFrameSize)
@@ -150,7 +149,7 @@ function Window:Title(Title)
         TextButton.Font = Enum.Font.SourceSans
         TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
         TextButton.Text = Name
-        TextButton.TextSize = 16.000
+        TextButton.TextSize = 16
         TextButton.Font = Enum.Font.GothamBold
         
         local UICorner2 = Instance.new("UICorner")
@@ -163,21 +162,21 @@ function Window:Title(Title)
     end
     
     -- Function to create toggle buttons inside the frame
-    function Elements:AddToggle(Name, Call)
+function Elements:AddToggle(Name, Call)
     -- Create the container frame for the toggle
-		local ToggleContainer = Instance.new("Frame")
-		ToggleContainer.Parent = Frame
-		ToggleContainer.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
-		ToggleContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-		ToggleContainer.BorderSizePixel = 0
-		ToggleContainer.Size = UDim2.new(0, 144, 0, 30)
-		ToggleContainer.LayoutOrder = 1
+    local ToggleContainer = Instance.new("Frame")
+    ToggleContainer.Parent = Frame
+    ToggleContainer.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
+    ToggleContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ToggleContainer.BorderSizePixel = 0
+    ToggleContainer.Size = UDim2.new(0, 144, 0, 30)
+    ToggleContainer.LayoutOrder = 1
 
-	local uiStroke = Instance.new("UIStroke")
-	uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Stroke applied to the border
-	uiStroke.Color = Color3.fromRGB(255, 255, 255) -- Stroke color (red)
-	uiStroke.Thickness = 1 -- Stroke thickness
-	uiStroke.Parent = ToggleContainer
+    local uiStroke = Instance.new("UIStroke")
+    uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Stroke applied to the border
+    uiStroke.Color = Color3.fromRGB(255, 255, 255) -- Stroke color (white)
+    uiStroke.Thickness = 1 -- Stroke thickness
+    uiStroke.Parent = ToggleContainer
 
     -- Create the TextLabel for the toggle title
     local TitleLabel = Instance.new("TextLabel")
@@ -190,7 +189,7 @@ function Window:Title(Title)
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     TitleLabel.Text = Name
     TitleLabel.TextSize = 16.000
-     TitleLabel.Font = Enum.Font.GothamBold
+    TitleLabel.Font = Enum.Font.GothamBold
 
     -- Create the toggle button
     local ToggleButton = Instance.new("TextButton")
@@ -199,8 +198,8 @@ function Window:Title(Title)
     ToggleButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ToggleButton.BorderSizePixel = 2 -- Outline when not toggled
     ToggleButton.BackgroundTransparency = 1
-    ToggleButton.Size = UDim2.new(0, 26, 26, 26)
-    ToggleButton.Position = UDim2.new(, 113, 0, 2) -- Positioned to the right
+    ToggleButton.Size = UDim2.new(0, 26, 0, 26)
+    ToggleButton.Position = UDim2.new(0, 113, 0, 2) -- Positioned to the right
     ToggleButton.Font = Enum.Font.SourceSans
     ToggleButton.Text = ""
     ToggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
