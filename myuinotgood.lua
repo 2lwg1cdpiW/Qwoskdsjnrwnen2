@@ -163,7 +163,7 @@ function Window:Title(Title)
     end
     
     -- Function to create toggle buttons inside the frame
-    function Elements:NewToggle(Name, Call)
+    function Elements:AddToggle(Name, Call)
     -- Create the container frame for the toggle
     local ToggleContainer = Instance.new("Frame")
     ToggleContainer.Parent = Frame
@@ -172,7 +172,13 @@ function Window:Title(Title)
     ToggleContainer.BorderSizePixel = 0
     ToggleContainer.Size = UDim2.new(0, 150, 0, 30)
     ToggleContainer.LayoutOrder = 1
-    
+
+	local uiStroke = Instance.new("UIStroke")
+	uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Stroke applied to the border
+	uiStroke.Color = Color3.fromRGB(255, 255, 255) -- Stroke color (red)
+	uiStroke.Thickness = 2 -- Stroke thickness
+	uiStroke.Parent = ToggleContainer
+
     -- Create the TextLabel for the toggle title
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.Parent = ToggleContainer
