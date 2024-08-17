@@ -232,5 +232,5 @@ function Add:Title(Title)
     }
 end
 
-    return TextLabel
+    return Add
 end
