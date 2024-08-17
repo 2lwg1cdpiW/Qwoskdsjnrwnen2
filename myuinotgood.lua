@@ -170,12 +170,11 @@ function Elements:AddToggle(Name, Call)
     ToggleContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ToggleContainer.BorderSizePixel = 0
     ToggleContainer.Size = UDim2.new(0, 144, 0, 30)
-    ToggleContainer.LayoutOrder = 1
 
     local uiStroke = Instance.new("UIStroke")
     uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Stroke applied to the border
     uiStroke.Color = Color3.fromRGB(255, 255, 255) -- Stroke color (white)
-    uiStroke.Thickness = 1 -- Stroke thickness
+    uiStroke.Thickness = 0.6 -- Stroke thickness
     uiStroke.Parent = ToggleContainer
 
     -- Create the TextLabel for the toggle title
@@ -250,7 +249,6 @@ function Elements:AddTextBox(Name, Call)
     TextBox.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
     TextBox.TextSize = 16
     TextBox.Font = Enum.Font.SourceSans
-    TextBox.LayoutOrder = 3  -- Set LayoutOrder for textbox
 
     local UICorner = Instance.new("UICorner")
     UICorner.CornerRadius = UDim.new(0, 3)
@@ -259,7 +257,7 @@ function Elements:AddTextBox(Name, Call)
     local uiStroke2 = Instance.new("UIStroke")
     uiStroke2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     uiStroke2.Color = Color3.fromRGB(255, 255, 255)
-    uiStroke2.Thickness = 1
+    uiStroke2.Thickness = 0.6
     uiStroke2.Parent = TextBox
 
     TextBox.FocusLost:Connect(function(enterPressed)
