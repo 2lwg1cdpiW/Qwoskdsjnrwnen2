@@ -1,3 +1,5 @@
+local Add = {}
+
 function Add:Title(Title)
     -- Create GUI elements
     local ScreenGui = Instance.new("ScreenGui")
@@ -91,7 +93,7 @@ function Add:Title(Title)
         end)
 
         Drag.InputChanged:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType.Touch then
                 dragInput = input
             end
         end)
@@ -136,7 +138,7 @@ function Add:Title(Title)
 
     TextButton_2.MouseButton1Click:Connect(toggleFrameSize)
 
-      function Add:Button(Name, Call)
+    function Add:Button(Name, Call)
         local TextButton = Instance.new("TextButton")
         TextButton.Parent = Frame
         TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -153,82 +155,84 @@ function Add:Title(Title)
         UICorner2.CornerRadius = UDim.new(0, 3)
         UICorner2.Parent = TextButton
 
-        TextButton.MouseButton1Click:Connect(function()
+TextButton.MouseButton1Click:Connect(function()
             pcall(Call)
         end)
     end
 
--- Function to create toggle buttons inside the frame
-  function Add:Toggle(Name, Call)
-    -- Create the container frame for the toggle
-    local ToggleContainer = Instance.new("Frame")
-    ToggleContainer.Parent = Frame
-    ToggleContainer.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
-    ToggleContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ToggleContainer.BorderSizePixel = 0
-    ToggleContainer.Size = UDim2.new(0, 150, 0, 30)
-    ToggleContainer.LayoutOrder = 1
-    
-    -- Create the TextLabel for the toggle title
-    local TitleLabel = Instance.new("TextLabel")
-    TitleLabel.Parent = ToggleContainer
-    TitleLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TitleLabel.BackgroundTransparency = 1
-    TitleLabel.Size = UDim2.new(0, 100, 1, 0)
-    TitleLabel.Position = UDim2.new(0, 0, 0, 0)
-    TitleLabel.Font = Enum.Font.SourceSans
-    TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TitleLabel.Text = Name
-    TitleLabel.TextSize = 16.000
-     TitleLabel.Font = Enum.Font.GothamBold
+    -- Function to create toggle buttons inside the frame
+    function Add:Toggle(Name, Call)
+        -- Create the container frame for the toggle
+        local ToggleContainer = Instance.new("Frame")
+        ToggleContainer.Parent = Frame
+        ToggleContainer.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
+        ToggleContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        ToggleContainer.BorderSizePixel = 0
+        ToggleContainer.Size = UDim2.new(0, 150, 0, 30)
+        ToggleContainer.LayoutOrder = 1
+        
+        -- Create the TextLabel for the toggle title
+        local TitleLabel = Instance.new("TextLabel")
+        TitleLabel.Parent = ToggleContainer
+        TitleLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        TitleLabel.BackgroundTransparency = 1
+        TitleLabel.Size = UDim2.new(0, 100, 1, 0)
+        TitleLabel.Position = UDim2.new(0, 0, 0, 0)
+        TitleLabel.Font = Enum.Font.SourceSans
+        TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        TitleLabel.Text = Name
+        TitleLabel.TextSize = 16.000
+        TitleLabel.Font = Enum.Font.GothamBold
 
-    -- Create the toggle button
-    local ToggleButton = Instance.new("TextButton")
-    ToggleButton.Parent = ToggleContainer
-    ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ToggleButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ToggleButton.BorderSizePixel = 2 -- Outline when not toggled
-    ToggleButton.BackgroundTransparency = 1
-    ToggleButton.Size = UDim2.new(0, 30, 1, 0)
-    ToggleButton.Position = UDim2.new(1, -35, 0, 0) -- Positioned to the right
-    ToggleButton.Font = Enum.Font.SourceSans
-    ToggleButton.Text = ""
-    ToggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+        -- Create the toggle button
+        local ToggleButton = Instance.new("TextButton")
+        ToggleButton.Parent = ToggleContainer
+        ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ToggleButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        ToggleButton.BorderSizePixel = 2 -- Outline when not toggled
+        ToggleButton.BackgroundTransparency = 1
+        ToggleButton.Size = UDim2.new(0, 30, 1, 0)
+        ToggleButton.Position = UDim2.new(1, -35, 0, 0) -- Positioned to the right
+        ToggleButton.Font = Enum.Font.SourceSans
+        ToggleButton.Text = ""
+        ToggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
 
-    local UICornerButton = Instance.new("UICorner")
-    UICornerButton.CornerRadius = UDim.new(0, 6)
-    UICornerButton.Parent = ToggleButton
+        local UICornerButton = Instance.new("UICorner")
+        UICornerButton.CornerRadius = UDim.new(0, 6)
+        UICornerButton.Parent = ToggleButton
 
-    local isToggled = false
+        local isToggled = false
 
-    local function updateVisuals()
-        if isToggled then
-            ToggleButton.BackgroundTransparency = 0
-            ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Green color when toggled
-            ToggleButton.BorderSizePixel = 0 -- Remove border when toggled
-        else
-            ToggleButton.BackgroundTransparency = 0.5
-            ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- White color when not toggled
-            ToggleButton.BorderSizePixel = 2 -- Add border when not toggled
+        local function updateVisuals()
+            if isToggled then
+                ToggleButton.BackgroundTransparency = 0
+                ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Green color when toggled
+                ToggleButton.BorderSizePixel = 0 -- Remove border when toggled
+            else
+                ToggleButton.BackgroundTransparency = 0.5
+                ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- White color when not toggled
+                ToggleButton.BorderSizePixel = 2 -- Add border when not toggled
+            end
         end
-    end
 
-    ToggleButton.MouseButton1Click:Connect(function()
-        isToggled = not isToggled
+        ToggleButton.MouseButton1Click:Connect(function()
+            isToggled = not isToggled
+            updateVisuals()
+            pcall(Call, isToggled) -- Pass the state to the callback
+        end)
+
+        -- Initial visual update
         updateVisuals()
-        pcall(Call, isToggled) -- Pass the state to the callback
-    end)
-
-    -- Initial visual update
-    updateVisuals()
-    
-    return {
-        Toggle = ToggleButton,
-        GetState = function()
-            return isToggled
-        end
-    }
-end
+        
+        return {
+            Toggle = ToggleButton,
+            GetState = function()
+                return isToggled
+            end
+        }
+    end
 
     return TextLabel
 end
+
+return Add
