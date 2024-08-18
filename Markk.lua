@@ -1,12 +1,3 @@
--- Function to create or get the ScreenGui
-local function LookForExistingGui()
-    local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-    local existingGui = playerGui:FindFirstChild("MarkLibrary")
-
-    if existingGui then
-        existingGui:Destroy()
-    end
-
 local Window = {}
 
 function Window:Title(Title)
@@ -19,10 +10,8 @@ function Window:Title(Title)
     local UICorner_2 = Instance.new("UICorner")
     local TextButton_2 = Instance.new("TextButton")
 
-	    -- Create the ScreenGui instance
-	local ScreenGui = Instance.new("ScreenGui")
-	ScreenGui.Name = "MarkLibrary"
-	ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    -- Set properties for GUI elements
+    ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
     TextLabel.Parent = ScreenGui
@@ -294,5 +283,3 @@ end
 end
 
 return Window
-
-LookForExistingGui()
