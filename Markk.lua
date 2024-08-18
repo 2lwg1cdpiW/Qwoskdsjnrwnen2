@@ -5,9 +5,8 @@ function Window:Title(Title)
     local ScreenGui = Instance.new("ScreenGui")
     local TextLabel = Instance.new("TextLabel")
     local UICorner = Instance.new("UICorner")
-    local Frame = Instance.new("ScrollingFrame")
     local UIListLayout = Instance.new("UIListLayout")
-    local UICorner_2 = Instance.new("UICorner")
+    local Frame = Instance.new("ScrollingFrame")
     local TextButton_2 = Instance.new("TextButton")
 
     -- Set properties for GUI elements
@@ -28,32 +27,6 @@ function Window:Title(Title)
 
     UICorner.CornerRadius = UDim.new(0, 2)
     UICorner.Parent = TextLabel
-
-		-- Setup the ScrollingFrame
-		Frame.Parent = TextLabel
-		Frame.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
-		Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-		Frame.BorderSizePixel = 0
-		Frame.Position = UDim2.new(0, 0, 0.966666639, 0)
-		Frame.Size = UDim2.new(0, 150, 0, 200)
-		Frame.ScrollBarThickness = 3
-		
-		-- Add the UIListLayout to the Frame
-		UIListLayout.Parent = Frame
-		UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-		UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-		UIListLayout.Padding = UDim.new(0, 3)
-		
-		-- Function to update CanvasSize based on UIListLayout size
-		local function updateCanvasSize()
-		    Frame.CanvasSize = UDim2.new(0, 150, 0, Frame.UIListLayout.AbsoluteContentSize.Y)
-		end
-		
-		-- Update CanvasSize whenever UIListLayout's content size changes
-		UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateCanvasSize)
-		
-		-- Initial CanvasSize setup
-		updateCanvasSize()
 
     TextButton_2.Parent = TextLabel
     TextButton_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -148,41 +121,86 @@ function Window:Title(Title)
 
     TextButton_2.MouseButton1Click:Connect(toggleFrameSize)
 
-    local Elements = {}
-    
-    function Elements:AddButton(Name, Call)
-        local TextButton = Instance.new("TextButton")
-        TextButton.Parent = Frame
-        TextButton.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
-        TextButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        TextButton.BorderSizePixel = 0
-        TextButton.Size = UDim2.new(0, 145, 0, 30)
-        TextButton.Font = Enum.Font.SourceSans
-        TextButton.TextColor3 = Color3.fromRGB(220, 220, 220)
-        TextButton.Text = Name
-        TextButton.TextSize = 16
-        TextButton.Font = Enum.Font.GothamBold
+    local Section = {}
+
+    function Section:AddSection(Name)
+        -- Create a new section frame
+        local SectionFrame = Instance.new("Frame")
+        SectionFrame.Parent = ScreenGui
+        SectionFrame.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
+        SectionFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        SectionFrame.BorderSizePixel = 0
+        SectionFrame.Position = UDim2.new(0, 55, 0, 60)
+        SectionFrame.Size = UDim2.new(0, 150, 0, 200)
         
-        local UICorner2 = Instance.new("UICorner")
-        UICorner2.CornerRadius = UDim.new(0, 3)
-        UICorner2.Parent = TextButton
+        local SectionTitle = Instance.new("TextLabel")
+        SectionTitle.Parent = SectionFrame
+        SectionTitle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        SectionTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        SectionTitle.BorderSizePixel = 0
+        SectionTitle.Size = UDim2.new(1, 0, 0, 30)
+        SectionTitle.Font = Enum.Font.SourceSans
+        SectionTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+        SectionTitle.Text = Name
+        SectionTitle.TextSize = 21
+        SectionTitle.Font = Enum.Font.GothamBold
+        
+        local UICorner_Section = Instance.new("UICorner")
+        UICorner_Section.CornerRadius = UDim.new(0, 2)
+        UICorner_Section.Parent = SectionTitle
 
-        TextButton.MouseButton1Click:Connect(function()
-            pcall(Call)
-        end)
-    end
-    
-    -- Function to create toggle buttons inside the frame
-function Elements:AddToggle(Name, Call)
-    -- Create the container frame for the toggle
-    local ToggleContainer = Instance.new("Frame")
-    ToggleContainer.Parent = Frame
-    ToggleContainer.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
-    ToggleContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ToggleContainer.BorderSizePixel = 0
-    ToggleContainer.Size = UDim2.new(0, 144, 0, 30)
+        local UIListLayout_Section = Instance.new("UIListLayout")
+        UIListLayout_Section.Parent = SectionFrame
+        UIListLayout_Section.HorizontalAlignment = Enum.HorizontalAlignment.Center
+        UIListLayout_Section.SortOrder = Enum.SortOrder.LayoutOrder
+        UIListLayout_Section.Padding = UDim.new(0, 3)
 
-    local uiStroke = Instance.new("UIStroke")
+        -- Function to update CanvasSize based on UIListLayout size
+        local function updateCanvasSize()
+            SectionFrame.CanvasSize = UDim2.new(0, 150, 0, SectionFrame.UIListLayout.AbsoluteContentSize.Y)
+        end
+
+        -- Update CanvasSize whenever UIListLayout's content size changes
+        UIListLayout_Section:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateCanvasSize)
+
+        -- Initial CanvasSize setup
+        updateCanvasSize()
+
+        local Elements = {}
+
+        function Elements:AddButton(Name, Call)
+            local TextButton = Instance.new("TextButton")
+            TextButton.Parent = SectionFrame
+            TextButton.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
+            TextButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            TextButton.BorderSizePixel = 0
+            TextButton.Size = UDim2.new(0, 145, 0, 30)
+            TextButton.Font = Enum.Font.SourceSans
+            TextButton.TextColor3 = Color3.fromRGB(220, 220, 220)
+            TextButton.Text = Name
+            TextButton.TextSize = 16
+            TextButton.Font = Enum.Font.GothamBold
+            
+            local UICorner2 = Instance.new("UICorner")
+            UICorner2.CornerRadius = UDim.new(0, 3)
+            UICorner2.Parent = TextButton
+
+            TextButton.MouseButton1Click:Connect(function()
+                pcall(Call)
+            end)
+        end
+
+        -- Function to create toggle buttons inside the frame
+        function Elements:AddToggle(Name, Call)
+            -- Create the container frame for the toggle
+            local ToggleContainer = Instance.new("Frame")
+            ToggleContainer.Parent = SectionFrame
+            ToggleContainer.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
+            ToggleContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            ToggleContainer.BorderSizePixel = 0
+            ToggleContainer.Size = UDim2.new(0, 144, 0, 30)
+            
+                local uiStroke = Instance.new("UIStroke")
     uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Stroke applied to the border
     uiStroke.Color = Color3.fromRGB(220, 220, 220) -- Stroke color (white)
     uiStroke.Thickness = 0.5 -- Stroke thickness
@@ -248,38 +266,50 @@ end
         end
     }
 end
+            
+             function Elements:AddTextBox(Name, DefaultText, Callback)
+            local TextBoxFrame = Instance.new("Frame")
+            TextBoxFrame.Parent = SectionFrame
+            TextBoxFrame.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
+            TextBoxFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            TextBoxFrame.BorderSizePixel = 0
+            TextBoxFrame.Size = UDim2.new(0, 145, 0, 30)
 
-function Elements:AddTextBox(Name, Call)
-    local TextBox = Instance.new("TextBox")
-    TextBox.Parent = Frame
-    TextBox.BorderColor3 = Color3.fromRGB(91, 91, 91)
-    TextBox.Size = UDim2.new(0, 144, 0, 30)
-    TextBox.PlaceholderText = Name
-    TextBox.PlaceholderColor3 = Color3.fromRGB(171, 171, 171)
-    TextBox.TextColor3 = Color3.fromRGB(220, 220, 220)
-    TextBox.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
-    TextBox.TextSize = 16
-    TextBox.Font = Enum.Font.GothamBold
+            local TextLabel = Instance.new("TextLabel")
+            TextLabel.Parent = TextBoxFrame
+            TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            TextLabel.BackgroundTransparency = 1
+            TextLabel.Size = UDim2.new(0.5, 0, 1, 0)
+            TextLabel.Font = Enum.Font.SourceSans
+            TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+            TextLabel.Text = Name
+            TextLabel.TextSize = 16
+            TextLabel.Font = Enum.Font.GothamBold
 
-    local UICorner = Instance.new("UICorner")
-    UICorner.CornerRadius = UDim.new(0, 3)
-    UICorner.Parent = TextBox
-    
-    local uiStroke2 = Instance.new("UIStroke")
-    uiStroke2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    uiStroke2.Color = Color3.fromRGB(220, 220, 220)
-    uiStroke2.Thickness = 0.5
-    uiStroke2.Parent = TextBox
+            local TextBox = Instance.new("TextBox")
+            TextBox.Parent = TextBoxFrame
+            TextBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+            TextBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            TextBox.BorderSizePixel = 0
+            TextBox.Position = UDim2.new(0.5, 0, 0, 0)
+            TextBox.Size = UDim2.new(0.5, 0, 1, 0)
+            TextBox.Font = Enum.Font.SourceSans
+            TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+            TextBox.Text = DefaultText
+            TextBox.TextSize = 16
+            TextBox.ClearTextOnFocus = false
 
-    TextBox.FocusLost:Connect(function(enterPressed)
-        if enterPressed then
-            pcall(Call, TextBox.Text)
+            TextBox.FocusLost:Connect(function(enterPressed)
+                if enterPressed then
+                    pcall(Callback, TextBox.Text)
+                end
+            end)
         end
-    end)
-end
-	
-	
-    return Elements
+
+        return Elements
+    end
+
+    return Section
 end
 
 return Window
