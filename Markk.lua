@@ -5,8 +5,10 @@ function Window:Title(Title)
     local ScreenGui = Instance.new("ScreenGui")
     local TextLabel = Instance.new("TextLabel")
     local UICorner = Instance.new("UICorner")
+    local Frame = Instance.new("ScrollingFrame")
     local UIListLayout = Instance.new("UIListLayout")
     local UICorner_2 = Instance.new("UICorner")
+    local TextButton_2 = Instance.new("TextButton")
 
     -- Set properties for GUI elements
     ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -26,6 +28,32 @@ function Window:Title(Title)
 
     UICorner.CornerRadius = UDim.new(0, 2)
     UICorner.Parent = TextLabel
+
+		-- Setup the ScrollingFrame
+		Frame.Parent = TextLabel
+		Frame.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
+		Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Frame.BorderSizePixel = 0
+		Frame.Position = UDim2.new(0, 0, 0.966666639, 0)
+		Frame.Size = UDim2.new(0, 150, 0, 200)
+		Frame.ScrollBarThickness = 3
+		
+		-- Add the UIListLayout to the Frame
+		UIListLayout.Parent = Frame
+		UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+		UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+		UIListLayout.Padding = UDim.new(0, 3)
+		
+		-- Function to update CanvasSize based on UIListLayout size
+		local function updateCanvasSize()
+		    Frame.CanvasSize = UDim2.new(0, 150, 0, Frame.UIListLayout.AbsoluteContentSize.Y)
+		end
+		
+		-- Update CanvasSize whenever UIListLayout's content size changes
+		UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateCanvasSize)
+		
+		-- Initial CanvasSize setup
+		updateCanvasSize()
 
     TextButton_2.Parent = TextLabel
     TextButton_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -120,65 +148,6 @@ function Window:Title(Title)
 
     TextButton_2.MouseButton1Click:Connect(toggleFrameSize)
 
-    local Section = {}
-    function Elements:AddSection(Name)
-    TextLabel.Parent = ScreenGui
-    TextLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    TextLabel.BorderSizePixel = 0
-    TextLabel.Position = UDim2.new(0, 55, 0, 20)
-    TextLabel.Size = UDim2.new(0, 150, 0, 30)
-    TextLabel.Font = Enum.Font.SourceSans
-    TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TextLabel.Text = Title
-    TextLabel.TextSize = 21
-    TextLabel.Font = Enum.Font.GothamBold
-    
-    local TextButton_2 = Instance.new("TextButton")
-    TextButton_2.Parent = Frame
-    TextButton_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TextButton_2.BackgroundTransparency = 1
-    TextButton_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    TextButton_2.BorderSizePixel = 0
-    TextButton_2.Position = UDim2.new(0.8, 0, -0.033, 0)
-    TextButton_2.Size = UDim2.new(0, 30, 0, 30)
-    TextButton_2.Font = Enum.Font.SourceSans
-    TextButton_2.Text = "-"
-    TextButton_2.TextColor3 = Color3.fromRGB(254, 254, 254)
-    TextButton_2.TextScaled = true
-    TextButton_2.TextSize = 14
-    TextButton_2.TextWrapped = true
-
-    local UICorner_Button2 = Instance.new("UICorner")
-    UICorner_Button2.CornerRadius = UDim.new(0, 3)
-    UICorner_Button2.Parent = TextButton_2
-    
-    		-- Setup the ScrollingFrame
-		Frame.Parent = TextLabel
-		Frame.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
-		Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-		Frame.BorderSizePixel = 0
-		Frame.Position = UDim2.new(0, 0, 0.966666639, 0)
-		Frame.Size = UDim2.new(0, 150, 0, 200)
-		Frame.ScrollBarThickness = 3
-		
-		-- Add the UIListLayout to the Frame
-		UIListLayout.Parent = Frame
-		UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-		UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-		UIListLayout.Padding = UDim.new(0, 3)
-		
-		-- Function to update CanvasSize based on UIListLayout size
-		local function updateCanvasSize()
-		    Frame.CanvasSize = UDim2.new(0, 150, 0, Frame.UIListLayout.AbsoluteContentSize.Y)
-		end
-		
-		-- Update CanvasSize whenever UIListLayout's content size changes
-		UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateCanvasSize)
-		
-		-- Initial CanvasSize setup
-		updateCanvasSize()
-    
     local Elements = {}
     
     function Elements:AddButton(Name, Call)
@@ -212,43 +181,7 @@ function Elements:AddToggle(Name, Call)
     ToggleContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ToggleContainer.BorderSizePixel = 0
     ToggleContainer.Size = UDim2.new(0, 144, 0, 30)
-    
-    
-    local UICornerButton = Instance.new("UICorner")
-    UICornerButton.CornerRadius = UDim.new(0, 6)
-    UICornerButton.Parent = ToggleButton
 
-    local isToggled = false
-
-local function updateVisuals()
-    if isToggled then
-        ToggleButton.BackgroundTransparency = 0
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Green color when toggled
-        ToggleButton.BorderSizePixel = 0 -- Remove border when toggled
-    else
-        ToggleButton.BackgroundTransparency = 0.5
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- White color when not toggled
-        ToggleButton.BorderSizePixel = 2 -- Add border when not toggled
-    end
-end
-
-    ToggleButton.MouseButton1Click:Connect(function()
-        isToggled = not isToggled
-        updateVisuals()
-        pcall(Call, isToggled) -- Pass the state to the callback
-    end)
-
-    -- Initial visual update
-    updateVisuals()
-    
-    return {
-        Toggle = ToggleButton,
-        GetState = function()
-            return isToggled
-        end
-    }
-end
-        
     local uiStroke = Instance.new("UIStroke")
     uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Stroke applied to the border
     uiStroke.Color = Color3.fromRGB(220, 220, 220) -- Stroke color (white)
