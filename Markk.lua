@@ -47,7 +47,7 @@ function Window:Title(Title)
 		-- Function to update CanvasSize based on UIListLayout size
 		local function updateCanvasSize()
 		    Frame.CanvasSize = UDim2.new(0, 150, 0, Frame.UIListLayout.AbsoluteContentSize.Y)
- 		end
+		end
 		
 		-- Update CanvasSize whenever UIListLayout's content size changes
 		UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateCanvasSize)
@@ -150,13 +150,14 @@ function Window:Title(Title)
 
     local Elements = {}
     
-    function Elements:AddSection(Name, Call)
-    local section = Instance.new("TextLabel")
-    section.BackgroundColor3 = Color3.fromRGB(110, 110, 110)
-    section.Size = UDim2.new(0, 150, 0, 30)
-    section.Text = Name
-    section.TextColor3 = Color3.fromRGB(220, 220, 220)
-    section.Parent = Frame
+	function Elements:AddSection(Name)
+	    local section = Instance.new("TextLabel")
+	    section.BackgroundColor3 = Color3.fromRGB(110, 110, 110)
+	    section.Size = UDim2.new(0, 150, 0, 30)
+	    section.Text = Name
+	    section.TextColor3 = Color3.fromRGB(220, 220, 220)
+	    section.Parent = Frame
+	end
     
     function Elements:AddButton(Name, Call)
         local TextButton = Instance.new("TextButton")
