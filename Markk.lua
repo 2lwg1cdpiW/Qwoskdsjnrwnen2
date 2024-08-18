@@ -22,8 +22,8 @@ function Window:Title(Title)
 	    -- Create the ScreenGui instance
 	local ScreenGui = Instance.new("ScreenGui")
 	ScreenGui.Name = "MarkLibrary"
-	ScreenGui.Parent = game:GetService("CoreGui")
-	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
     TextLabel.Parent = ScreenGui
     TextLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
