@@ -150,6 +150,14 @@ function Window:Title(Title)
 
     local Elements = {}
     
+    function Elements:AddSection(Name, Call)
+    local section = Instance.new("TextLabel")
+    section.BackgroundColor3 = Color3.fromRGB(110, 110, 110)
+    section.Size = UDim2.new(0, 150, 0, 30)
+    section.Text = Name
+    section.TextColor3 = Color3.fromRGB(220, 220, 220)
+    section.Parent = Frame
+    
     function Elements:AddButton(Name, Call)
         local TextButton = Instance.new("TextButton")
         TextButton.Parent = Frame
