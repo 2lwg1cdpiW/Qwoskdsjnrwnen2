@@ -35,7 +35,7 @@ function Window:Title(Title)
 		Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		Frame.BorderSizePixel = 0
 		Frame.Position = UDim2.new(0, 0, 0.966666639, 0)
-		Frame.Size = UDim2.new(0, 150, 0, 30)
+		Frame.Size = UDim2.new(0, 150, 0, 200)
 		Frame.ScrollBarThickness = 3
 		
 		-- Add the UIListLayout to the Frame
@@ -46,7 +46,7 @@ function Window:Title(Title)
 		
 		-- Function to update CanvasSize based on UIListLayout size
 		local function updateCanvasSize()
-		    Frame.CanvasSize = UDim2.new(0, 150, 0, Frame.UIListLayout.AbsoluteContentSize.Y + 10)
+		    Frame.CanvasSize = UDim2.new(0, 150, 0, Frame.UIListLayout.AbsoluteContentSize.Y)
 		end
 		
 		-- Update CanvasSize whenever UIListLayout's content size changes
@@ -128,7 +128,7 @@ function Window:Title(Title)
         )
         
         local collapsedSize = UDim2.new(0, 150, 0, 1)
-        local expandedSize = UDim2.new(0, 150, 0, 30)
+        local expandedSize = UDim2.new(0, 150, 0, y)
 
         if toggleState then
             -- Expand the frame
