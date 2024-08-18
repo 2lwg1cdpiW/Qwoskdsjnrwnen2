@@ -1,6 +1,6 @@
 -- Function to create or get the ScreenGui
 local function LookForExistingGui()
-    local playerGui = game:GetService("CoreGui")
+    local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
     local existingGui = playerGui:FindFirstChild("MarkLibrary")
 
     if existingGui then
@@ -22,7 +22,7 @@ function Window:Title(Title)
 	    -- Create the ScreenGui instance
 	local ScreenGui = Instance.new("ScreenGui")
 	ScreenGui.Name = "MarkLibrary"
-	ScreenGui.Parent = game:GetService("CoreGui")
+	ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
     TextLabel.Parent = ScreenGui
