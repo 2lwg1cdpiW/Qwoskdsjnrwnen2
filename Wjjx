@@ -1,7 +1,10 @@
+#Calling the library
+
 ```lua
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/2lwg1cdpiW/Qwoskdsjnrwnen2/main/myuinotgood.lua"))()
 ```
 
+#Making the title/adding
 ```lua
 local Window =  Library:Title("Coolname")
 ```
@@ -9,12 +12,14 @@ local Window =  Library:Title("Coolname")
 
 local JumpEnabled = false
 
+#adding a button
 ```lua
 local button = Window:AddButton("rublowks", function()
     print("Button clicked!")
 end)
 ```
 
+#adding a toggle
 ```lua
 local toggle = Window:AddToggle("rublowks", function(bool)
     JumpEnabled = bool
@@ -28,27 +33,9 @@ game:GetService("UserInputService").JumpRequest:connect(function()
     end
 end)
 
+#adding a textbox
 ```lua
 local Textboz = Window:AddTextBox("rublowks", function(text)
-    print("cool")
-end)
-```
-
-```lua
-local Toggle = Window:AddToggle("rublowks", function(bool)
-    JumpEnabled = bool
-end)
-```
-
-game:GetService("UserInputService").JumpRequest:connect(function()
-    if JumpEnabled == true then
-    
-        game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Jumping")
-    end
-end)
-
-```lua
-local Textbox = Window:AddTextBox("rublowks", function(text)
     print("cool")
 end)
 ```
