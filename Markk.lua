@@ -1,6 +1,6 @@
 -- Function to create or get the ScreenGui
 local function LookForExistingGui()
-    local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    local playerGui = game:GetService("CoreGui")
     local existingGui = playerGui:FindFirstChild("MarkLibrary")
 
     if existingGui then
