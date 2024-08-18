@@ -126,7 +126,7 @@ function Window:Title(Title)
     function Section:AddSection(Name)
         -- Create a new section frame
         local SectionFrame = Instance.new("Frame")
-        SectionFrame.Parent = ScreenGui
+        SectionFrame.Parent = TextLabel
         SectionFrame.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
         SectionFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
         SectionFrame.BorderSizePixel = 0
