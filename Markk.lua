@@ -47,7 +47,7 @@ function Window:Title(Title)
 		-- Function to update CanvasSize based on UIListLayout size
 		local function updateCanvasSize()
 		    Frame.CanvasSize = UDim2.new(0, 150, 0, Frame.UIListLayout.AbsoluteContentSize.Y)
-		end
+ 		end
 		
 		-- Update CanvasSize whenever UIListLayout's content size changes
 		UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateCanvasSize)
