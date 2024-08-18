@@ -1,31 +1,18 @@
-local function LookForExistingGui()
-    local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-    local existingGui = playerGui:FindFirstChild("MarkLibrary")
-
-    if existingGui then
-        existingGui:Destroy()  -- Remove existing GUI
-    end
-
-    -- Create and set up the new ScreenGui
-    local ScreenGui = Instance.new("ScreenGui")
-    ScreenGui.Name = "MarkLibrary"
-    ScreenGui.Parent = playerGui
-    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-
-    return ScreenGui  -- Return the created ScreenGui
-end
-
 local Window = {}
 
 function Window:Title(Title)
-    local ScreenGui = LookForExistingGui()
-	
+    -- Create GUI elements
+    local ScreenGui = Instance.new("ScreenGui")
     local TextLabel = Instance.new("TextLabel")
     local UICorner = Instance.new("UICorner")
     local Frame = Instance.new("ScrollingFrame")
     local UIListLayout = Instance.new("UIListLayout")
     local UICorner_2 = Instance.new("UICorner")
     local TextButton_2 = Instance.new("TextButton")
+
+    -- Set properties for GUI elements
+    ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
     TextLabel.Parent = ScreenGui
     TextLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -296,5 +283,3 @@ end
 end
 
 return Window
-
-LookForExistingGui()
