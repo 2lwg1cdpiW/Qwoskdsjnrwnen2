@@ -167,84 +167,79 @@ local Elements = {}
 end
 
 function Elements:AddToggle(Name, Call)
-local ToggleHolder = Instance.new("Frame")
-ToggleHolder.Name = "ToggleHolder"
-ToggleHolder.Size = UDim2.new(1, 0, 0, 38)
-ToggleHolder.Position = UDim2.new(0, 0, 0, 0)
-ToggleHolder.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
-ToggleHolder.BorderColor3 = Color3.new(0, 0, 0)
-ToggleHolder.BorderSizePixel = 0
-ToggleHolder.Active = true
-ToggleHolder.BackgroundTransparency = 0 
-ToggleHolder.Parent = elementsholder
+    -- Create the main holder frame
+    local ToggleHolder = Instance.new("Frame")
+    ToggleHolder.Name = "ToggleHolder"
+    ToggleHolder.Size = UDim2.new(1, 0, 0, 38)
+    ToggleHolder.Position = UDim2.new(0, 0, 0, 0)
+    ToggleHolder.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
+    ToggleHolder.BorderSizePixel = 0
+    ToggleHolder.Parent = elementsholder
 
-local toggleback = Instance.new("Frame")
-toggleback.Size = UDim2.new(1, -4, 1, -4)
-toggleback.Position = UDim2.new(0, 2, 0, 2)
-toggleback.BackgroundColor3 = Color3.fromRGB(32, 32, 32)
-toggleback.BorderColor3 = Color3.new(0, 0, 0)
-toggleback.BorderSizePixel = 0
-toggleback.BackgroundTransparency = 0 
-toggleback.Parent = ToggleHolder
+    -- Create the background frame for the toggle
+    local ToggleBackground = Instance.new("Frame")
+    ToggleBackground.Size = UDim2.new(1, -4, 1, -4)
+    ToggleBackground.Position = UDim2.new(0, 2, 0, 2)
+    ToggleBackground.BackgroundColor3 = Color3.fromRGB(32, 32, 32)
+    ToggleBackground.BorderSizePixel = 0
+    ToggleBackground.Parent = ToggleHolder
 
-local toggleTitle = Instance.new("TextLabel")
-toggleTitle.Size = UDim2.new(1, -32, 1, 0)
-toggleTitle.Position = UDim2.new(0, 0, 0, 0)
-toggleTitle.BackgroundColor3 = Color3.new(0, 0, 0)
-toggleTitle.BorderColor3 = Color3.new(0, 0, 0)
-toggleTitle.BorderSizePixel = 0
-toggleTitle.Text = Name
-toggleTitle.TextSize = 18
-toggleTitle.BackgroundTransparency = 1
-toggleTitle.TextColor3 = Color3.new(255, 255, 255)
-toggleTitle.TextXAlignment = Enum.TextXAlignment.Left
-toggleTitle.Font = Enum.Font.SciFi
-toggleTitle.Parent = toggleback
+    -- Create the title text label
+    local ToggleTitle = Instance.new("TextLabel")
+    ToggleTitle.Size = UDim2.new(1, -32, 1, 0)
+    ToggleTitle.Position = UDim2.new(0, 0, 0, 0)
+    ToggleTitle.BackgroundTransparency = 1
+    ToggleTitle.Text = Name
+    ToggleTitle.TextSize = 18
+    ToggleTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleTitle.TextXAlignment = Enum.TextXAlignment.Left
+    ToggleTitle.Font = Enum.Font.SciFi
+    ToggleTitle.Parent = ToggleBackground
 
-local Toggle = Instance.new("TextButton")
-Toggle.Name = "toggle"
-Toggle.Size = UDim2.new(0, 26, 0, 26)
-Toggle.Position = UDim2.new(1, -32, 0, 56)
-Toggle.BackgroundColor3 = Color3.fromRGB(246, 246, 246)
-Toggle.BorderColor3 = Color3.new(0, 0, 0)
-Toggle.BorderSizePixel = 0
-Toggle.BackgroundTransparency = 0 
-Toggle.TextColor3 = Color3.new(255, 255, 255)
-Toggle.Font = Enum.Font.SciFi
-Toggle.Parent = ToggleHolder
+    -- Create the toggle button
+    local ToggleButton = Instance.new("TextButton")
+    ToggleButton.Name = "toggle"
+    ToggleButton.Size = UDim2.new(0, 26, 0, 26)
+    ToggleButton.Position = UDim2.new(1, -32, 0, 56)
+    ToggleButton.BackgroundColor3 = Color3.fromRGB(246, 246, 246)
+    ToggleButton.BorderSizePixel = 0
+    ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleButton.Font = Enum.Font.SciFi
+    ToggleButton.Parent = ToggleHolder
 
-local UICorner = Instance.new("UICorner")
-UICorner.CornerRadius = UDim.new(0, 6)
-UICorner.Parent = Toggle
+    -- Add rounded corners to the toggle button
+    local UICorner = Instance.new("UICorner")
+    UICorner.CornerRadius = UDim.new(0, 6)
+    UICorner.Parent = ToggleButton
 
-local PaddingT = Instance.new("UIPadding")
-PaddingT.PaddingBottom = UDim.new(0, 6)
-PaddingT.PaddingLeft = UDim.new(0, 6)
-PaddingT.PaddingRight = UDim.new(0, 6)
-PaddingT.PaddingTop = UDim.new(0, 6)
-PaddingT.Parent = toggleTitle
+    -- Add padding to the title label
+    local PaddingT = Instance.new("UIPadding")
+    PaddingT.PaddingBottom = UDim.new(0, 6)
+    PaddingT.PaddingLeft = UDim.new(0, 6)
+    PaddingT.PaddingRight = UDim.new(0, 6)
+    PaddingT.PaddingTop = UDim.new(0, 6)
+    PaddingT.Parent = ToggleTitle
 
-local isToggled = false
+    -- Initial toggle state
+    local isToggled = false
 
-local function updateVisuals()
-    if isToggled then
-        Toggle.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-    else
-        Toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    -- Update visuals based on the toggle state
+    local function updateVisuals()
+        ToggleButton.BackgroundColor3 = isToggled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 255, 255)
     end
-end
 
-    Toggle.MouseButton1Click:Connect(function()
+    -- Connect the toggle button click event
+    ToggleButton.MouseButton1Click:Connect(function()
         isToggled = not isToggled
         updateVisuals()
-        pcall(Call, isToggled) -- Pass the state to the callback
+        pcall(Call, isToggled) -- Call the callback function with the current state
     end)
 
     -- Initial visual update
     updateVisuals()
-    
+
     return {
-        Toggle = Toggle,
+        Toggle = ToggleButton,
         GetState = function()
             return isToggled
         end
