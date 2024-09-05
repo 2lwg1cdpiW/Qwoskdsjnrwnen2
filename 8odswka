@@ -200,7 +200,7 @@ function Elements:AddToggle(Name, Call)
     local ToggleButton = Instance.new("TextButton")
     ToggleButton.Name = "toggle"
     ToggleButton.Size = UDim2.new(0, 26, 0, 26)
-    ToggleButton.Position = UDim2.new(1, -32, 0, 56)
+    ToggleButton.Position = UDim2.new(1, -32, 0, 6) -- Ensure position is visible
     ToggleButton.BackgroundColor3 = Color3.fromRGB(246, 246, 246)
     ToggleButton.BorderSizePixel = 0
     ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
