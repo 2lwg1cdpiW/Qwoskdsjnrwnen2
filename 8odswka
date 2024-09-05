@@ -1,0 +1,261 @@
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local CoreGui = game:GetService("CoreGui")
+local UserInputService = game:GetService("UserInputService")
+
+local function MakeDraggable(DragPoint, Main)
+	pcall(function()
+		local Dragging, DragInput, MousePos, FramePos = false
+		DragPoint.InputBegan:Connect(function(Input)
+			if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+				Dragging = true
+				MousePos = Input.Position
+				FramePos = Main.Position
+
+				Input.Changed:Connect(function()
+					if Input.UserInputState == Enum.UserInputState.End then
+						Dragging = false
+					end
+				end)
+			end
+		end)
+		DragPoint.InputChanged:Connect(function(Input)
+			if Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch then
+				DragInput = Input
+			end
+		end)
+		UserInputService.InputChanged:Connect(function(Input)
+			if Input == DragInput and Dragging then
+				local Delta = Input.Position - MousePos
+				TweenService:Create(Main, TweenInfo.new(0.05, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position  = UDim2.new(FramePos.X.Scale, FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)}):Play()
+				Main.Position  = UDim2.new(FramePos.X.Scale, FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)
+			end
+		end)
+	end)
+end
+
+local function MakeMinimize(frame, button)
+    local originalSize = frame.Size
+    local minimizedSize = UDim2.new(originalSize.X.Scale, originalSize.X.Offset, 0, 30)
+
+    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    local isMinimized = false
+
+    local function ToggleMinimize()
+        if isMinimized then
+            local maximizeTween = TweenService:Create(frame, tweenInfo, {Size = originalSize})
+            maximizeTween:Play()
+        else
+            local minimizeTween = TweenService:Create(frame, tweenInfo, {Size = minimizedSize})
+            minimizeTween:Play()
+        end
+        isMinimized = not isMinimized
+    end
+
+    button.MouseButton1Click:Connect(ToggleMinimize)
+end
+
+local Window = {}
+
+function Window:Name(name)
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = RunService:IsStudio() and Players.LocalPlayer:WaitForChild("PlayerGui") or CoreGui
+
+local Main = Instance.new("Frame")
+Main.Size = UDim2.new(0, 186, 0, 200)
+Main.Position = UDim2.new(0.5, -105, 0.5, -90)  -- Adjusted to center the frame properly
+Main.BackgroundColor3 = Color3.fromRGB(50, 50, 50)  -- Use Color3.fromRGB for RGB values
+Main.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Main.BorderSizePixel = 0
+Main.Active = true
+Main.BackgroundTransparency = 0
+Main.Parent = screenGui
+
+local topbar = Instance.new("Frame")
+topbar.Size = UDim2.new(1, 0, 0, 30)
+topbar.Position = UDim2.new(0, 0, 0, 0)
+topbar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+topbar.BorderColor3 = Color3.new(0, 0, 0)
+topbar.BorderSizePixel = 0
+topbar.Active = true
+topbar.BackgroundTransparency = 0
+topbar.Parent = Main
+
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1, 0, 0, 30)
+Title.Position = UDim2.new(0, 0, 0, 0)
+Title.BackgroundColor3 = Color3.new(0, 0, 0)
+Title.BorderColor3 = Color3.new(0, 0, 0)
+Title.BorderSizePixel = 1
+Title.Text = name
+Title.TextSize = 20
+Title.BackgroundTransparency = 1
+Title.TextColor3 = Color3.new(255, 255, 255)
+Title.Font = Enum.Font.SciFi
+Title.Parent = topbar
+
+local minimize = Instance.new("TextButton")
+minimize.Size = UDim2.new(0, 30, 0, 30)
+minimize.Position = UDim2.new(1, -30, 0, 0)
+minimize.BackgroundColor3 = Color3.new(0, 0, 0)
+minimize.BorderColor3 = Color3.new(0, 0, 0)
+minimize.BorderSizePixel = 1
+minimize.Text = "-"
+minimize.TextSize = 18
+minimize.BackgroundTransparency = 1
+minimize.TextColor3 = Color3.new(255, 255, 255)
+minimize.Font = Enum.Font.SciFi
+minimize.Parent = topbar
+
+local elementsholder = Instance.new("ScrollingFrame")
+elementsholder.Size = UDim2.new(1, 0, 1, -30)
+elementsholder.Position = UDim2.new(0, 0, 0, 30)
+elementsholder.BackgroundColor3 = Color3.fromRGB(1, 1, 1)
+elementsholder.BorderColor3 = Color3.new(0, 0, 0)
+elementsholder.ScrollBarThickness = 0
+elementsholder.ScrollingDirection = Enum.ScrollingDirection.Y
+elementsholder.BackgroundTransparency = 1
+elementsholder.BorderSizePixel = 0
+elementsholder.Parent = Main
+
+local UIListLayout = Instance.new("UIListLayout")
+UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 3)
+UIListLayout.Parent = elementsholder
+
+local Elements = {}
+
+	function Elements:AddButton(Name, Call)
+	local Buttonholder = Instance.new("Frame")
+	Buttonholder.Name = "Buttonholder"
+	Buttonholder.Size = UDim2.new(1, 0, 0, 34)
+	Buttonholder.Position = UDim2.new(0, 0, 0, 0)
+	Buttonholder.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
+	Buttonholder.BorderColor3 = Color3.new(0, 0, 0)
+	Buttonholder.BorderSizePixel = 0
+	Buttonholder.Active = true
+	Buttonholder.BackgroundTransparency = 0 
+	Buttonholder.Parent = elementsholder
+	
+	local buttons = Instance.new("TextButton")
+	buttons.Name = "Button"
+	buttons.Size = UDim2.new(1, -4, 1, -4)
+	buttons.Position = UDim2.new(0, 2, 0, 2)
+	buttons.BackgroundColor3 = Color3.fromRGB(32, 32, 32)
+	buttons.BorderColor3 = Color3.new(0, 0, 0)
+	buttons.BorderSizePixel = 0
+	buttons.Text = Name
+	buttons.TextSize = 18
+	buttons.BackgroundTransparency = 0 
+	buttons.TextColor3 = Color3.new(255, 255, 255)
+	buttons.Font = Enum.Font.SciFi
+	buttons.TextXAlignment = Enum.TextXAlignment.Left
+	buttons.Parent = Buttonholder
+	
+	local Padding = Instance.new("UIPadding")
+	Padding.PaddingBottom = UDim.new(0, 6)
+	Padding.PaddingLeft = UDim.new(0, 6)
+	Padding.PaddingRight = UDim.new(0, 6)
+	Padding.PaddingTop = UDim.new(0, 6)
+	Padding.Parent = buttons
+
+   Buttons.MouseButton1Click:Connect(function()
+      pcall(Call)
+   end)
+end
+
+function Elements:AddToggle(Name, Call)
+local ToggleHolder = Instance.new("Frame")
+ToggleHolder.Name = "ToggleHolder"
+ToggleHolder.Size = UDim2.new(1, 0, 0, 38)
+ToggleHolder.Position = UDim2.new(0, 0, 0, 0)
+ToggleHolder.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
+ToggleHolder.BorderColor3 = Color3.new(0, 0, 0)
+ToggleHolder.BorderSizePixel = 0
+ToggleHolder.Active = true
+ToggleHolder.BackgroundTransparency = 0 
+ToggleHolder.Parent = elementsholder
+
+local toggleback = Instance.new("Frame")
+toggleback.Size = UDim2.new(1, -4, 1, -4)
+toggleback.Position = UDim2.new(0, 2, 0, 2)
+toggleback.BackgroundColor3 = Color3.fromRGB(32, 32, 32)
+toggleback.BorderColor3 = Color3.new(0, 0, 0)
+toggleback.BorderSizePixel = 0
+toggleback.BackgroundTransparency = 0 
+toggleback.Parent = ToggleHolder
+
+local toggleTitle = Instance.new("TextLabel")
+toggleTitle.Size = UDim2.new(1, -32, 1, 0)
+toggleTitle.Position = UDim2.new(0, 0, 0, 0)
+toggleTitle.BackgroundColor3 = Color3.new(0, 0, 0)
+toggleTitle.BorderColor3 = Color3.new(0, 0, 0)
+toggleTitle.BorderSizePixel = 0
+toggleTitle.Text = Name
+toggleTitle.TextSize = 18
+toggleTitle.BackgroundTransparency = 1
+toggleTitle.TextColor3 = Color3.new(255, 255, 255)
+toggleTitle.TextXAlignment = Enum.TextXAlignment.Left
+toggleTitle.Font = Enum.Font.SciFi
+toggleTitle.Parent = toggleback
+
+local Toggle = Instance.new("TextButton")
+Toggle.Name = "toggle"
+Toggle.Size = UDim2.new(0, 26, 0, 26)
+Toggle.Position = UDim2.new(1, -32, 0, 56)
+Toggle.BackgroundColor3 = Color3.fromRGB(246, 246, 246)
+Toggle.BorderColor3 = Color3.new(0, 0, 0)
+Toggle.BorderSizePixel = 0
+Toggle.BackgroundTransparency = 0 
+Toggle.TextColor3 = Color3.new(255, 255, 255)
+Toggle.Font = Enum.Font.SciFi
+Toggle.Parent = ToggleHolder
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 6)
+UICorner.Parent = Toggle
+
+local PaddingT = Instance.new("UIPadding")
+PaddingT.PaddingBottom = UDim.new(0, 6)
+PaddingT.PaddingLeft = UDim.new(0, 6)
+PaddingT.PaddingRight = UDim.new(0, 6)
+PaddingT.PaddingTop = UDim.new(0, 6)
+PaddingT.Parent = toggleTitle
+
+local isToggled = false
+
+local function updateVisuals()
+    if isToggled then
+        Toggle.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+    else
+        Toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    end
+end
+
+    Toggle.MouseButton1Click:Connect(function()
+        isToggled = not isToggled
+        updateVisuals()
+        pcall(Call, isToggled) -- Pass the state to the callback
+    end)
+
+    -- Initial visual update
+    updateVisuals()
+    
+    return {
+        Toggle = Toggle,
+        GetState = function()
+            return isToggled
+        end
+    }
+end
+
+--callback drag minimize
+MakeDraggable(topbar, Main)
+MakeMinimize(Main, minimize)
+
+return Elements
+end
+
+return Window
