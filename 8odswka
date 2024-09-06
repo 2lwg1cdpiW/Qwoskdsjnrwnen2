@@ -37,6 +37,13 @@ function Library:Init(title)
         Parent = self.Window
     })
 
+    -- Create a UIListLayout to handle the layout of sections
+    self.Layout = createInstance("UIListLayout", {
+        Padding = UDim.new(0, 10),
+        SortOrder = Enum.SortOrder.LayoutOrder,
+        Parent = self.Window
+    })
+
     self.Sections = {}
 end
 
@@ -46,6 +53,7 @@ function Library:CreateSection(title)
         Size = UDim2.new(1, 0, 0, 120),
         BackgroundColor3 = Color3.fromRGB(40, 40, 40),
         BorderSizePixel = 0,
+        LayoutOrder = #self.Sections + 1, -- Ensure sections are ordered
         Parent = self.Window
     })
 
@@ -60,20 +68,23 @@ function Library:CreateSection(title)
     })
 
     local layout = createInstance("UIListLayout", {
-        Padding = UDim.new(0, 10),
+        Padding = UDim.new(0, 6),
         HorizontalAlignment = Enum.HorizontalAlignment.Center,
+        SortOrder = Enum.SortOrder.LayoutOrder,
         Parent = section
     })
 
     table.insert(self.Sections, section)
+
     return {
         CreateButton = function(self, text, onClick)
             local button = createInstance("TextButton", {
-                Size = UDim2.new(1, -20, 0, 50),
+                Size = UDim2.new(1, -20, 0, 30),
                 BackgroundColor3 = Color3.fromRGB(0, 102, 204),
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 Text = text,
                 TextScaled = true,
+                LayoutOrder = #section:GetChildren() + 1, -- Ensure buttons are ordered within the section
                 Parent = section
             })
             button.MouseButton1Click:Connect(onClick)
@@ -84,11 +95,12 @@ function Library:CreateSection(title)
             local frame = createInstance("Frame", {
                 Size = UDim2.new(1, -20, 0, 50),
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                LayoutOrder = #section:GetChildren() + 1, -- Ensure toggles are ordered within the section
                 Parent = section
             })
 
             local label = createInstance("TextLabel", {
-                Size = UDim2.new(0.5, 0, 1, 0),
+                Size = UDim2.new(1, 0, 0, 30),
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 TextColor3 = Color3.fromRGB(0, 0, 0),
                 Text = text,
@@ -101,7 +113,7 @@ function Library:CreateSection(title)
                 Position = UDim2.new(0.5, 0, 0, 0),
                 BackgroundColor3 = Color3.fromRGB(0, 102, 204),
                 TextColor3 = Color3.fromRGB(255, 255, 255),
-                Text = "OFF",
+                Text = "",
                 TextScaled = true,
                 Parent = frame
             })
