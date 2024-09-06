@@ -1,297 +1,84 @@
-local Players = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
-local RunService = game:GetService("RunService")
-local CoreGui = game:GetService("CoreGui")
-local UserInputService = game:GetService("UserInputService")
+-- CustomUIHubModuleScript
+local CustomUIHub = {}
+CustomUIHub.__index = CustomUIHub
 
-local function MakeDraggable(DragPoint, Main)
-    pcall(function()
-        local Dragging, DragInput, MousePos, FramePos = false
-        DragPoint.InputBegan:Connect(function(Input)
-            if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
-                Dragging = true
-                MousePos = Input.Position
-                FramePos = Main.Position
-
-                Input.Changed:Connect(function()
-                    if Input.UserInputState == Enum.UserInputState.End then
-                        Dragging = false
-                    end
-                end)
-            end
-        end)
-        DragPoint.InputChanged:Connect(function(Input)
-            if Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch then
-                DragInput = Input
-            end
-        end)
-        UserInputService.InputChanged:Connect(function(Input)
-            if Input == DragInput and Dragging then
-                local Delta = Input.Position - MousePos
-                TweenService:Create(Main, TweenInfo.new(0.05, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position  = UDim2.new(FramePos.X.Scale, FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)}):Play()
-                Main.Position  = UDim2.new(FramePos.X.Scale, FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)
-            end
-        end)
-    end)
+-- Helper function to create a new instance
+local function createInstance(className, properties)
+    local instance = Instance.new(className)
+    for prop, value in pairs(properties) do
+        instance[prop] = value
+    end
+    return instance
 end
 
-local function MakeMinimize(frame, button)
-    local originalSize = frame.Size
-    local minimizedSize = UDim2.new(originalSize.X.Scale, originalSize.X.Offset, 0, 30)
-
-    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    local isMinimized = false
-
-    local function ToggleMinimize()
-        if isMinimized then
-            local maximizeTween = TweenService:Create(frame, tweenInfo, {Size = originalSize})
-            maximizeTween:Play()
-        else
-            local minimizeTween = TweenService:Create(frame, tweenInfo, {Size = minimizedSize})
-            minimizeTween:Play()
-        end
-        isMinimized = not isMinimized
-    end
-
-    button.MouseButton1Click:Connect(ToggleMinimize)
+-- Initialize UI
+function CustomUIHub:Init(parent)
+    self.Parent = parent
+    self.Elements = {}
 end
 
-local Window = {}
+-- Create a Button
+function CustomUIHub:CreateButton(text, onClick)
+    local button = createInstance("TextButton", {
+        Parent = self.Parent,
+        Size = UDim2.new(0, 200, 0, 50),
+        BackgroundColor3 = Color3.fromRGB(0, 122, 204),
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        Text = text,
+        TextScaled = true
+    })
+    button.MouseButton1Click:Connect(onClick)
+    table.insert(self.Elements, button)
+    return button
+end
 
-function Window:Name(name)
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Parent = RunService:IsStudio() and Players.LocalPlayer:WaitForChild("PlayerGui") or CoreGui
-
-    local Main = Instance.new("Frame")
-    Main.Size = UDim2.new(0, 186, 0, 200)
-    Main.Position = UDim2.new(0.5, -105, 0.5, -90)  -- Adjusted to center the frame properly
-    Main.BackgroundColor3 = Color3.fromRGB(50, 50, 50)  -- Use Color3.fromRGB for RGB values
-    Main.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Main.BorderSizePixel = 0
-    Main.Active = true
-    Main.BackgroundTransparency = 0
-    Main.Parent = screenGui
-
-    local topbar = Instance.new("Frame")
-    topbar.Size = UDim2.new(1, 0, 0, 30)
-    topbar.Position = UDim2.new(0, 0, 0, 0)
-    topbar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    topbar.BorderColor3 = Color3.new(0, 0, 0)
-    topbar.BorderSizePixel = 0
-    topbar.Active = true
-    topbar.BackgroundTransparency = 0
-    topbar.Parent = Main
-
-    local Title = Instance.new("TextLabel")
-    Title.Size = UDim2.new(1, 0, 0, 30)
-    Title.Position = UDim2.new(0, 0, 0, 0)
-    Title.BackgroundColor3 = Color3.new(0, 0, 0)
-    Title.BorderColor3 = Color3.new(0, 0, 0)
-    Title.BorderSizePixel = 1
-    Title.Text = name
-    Title.TextSize = 20
-    Title.BackgroundTransparency = 1
-    Title.TextColor3 = Color3.new(255, 255, 255)
-    Title.Font = Enum.Font.SciFi
-    Title.Parent = topbar
-
-    local minimize = Instance.new("TextButton")
-    minimize.Size = UDim2.new(0, 30, 0, 30)
-    minimize.Position = UDim2.new(1, -30, 0, 0)
-    minimize.BackgroundColor3 = Color3.new(0, 0, 0)
-    minimize.BorderColor3 = Color3.new(0, 0, 0)
-    minimize.BorderSizePixel = 1
-    minimize.Text = "-"
-    minimize.TextSize = 18
-    minimize.BackgroundTransparency = 1
-    minimize.TextColor3 = Color3.new(255, 255, 255)
-    minimize.Font = Enum.Font.SciFi
-    minimize.Parent = topbar
-
-    local elementsholder = Instance.new("ScrollingFrame")
-    elementsholder.Size = UDim2.new(1, 0, 1, -30)
-    elementsholder.Position = UDim2.new(0, 0, 0, 30)
-    elementsholder.BackgroundColor3 = Color3.fromRGB(1, 1, 1)
-    elementsholder.BorderColor3 = Color3.new(0, 0, 0)
-    elementsholder.ScrollBarThickness = 0
-    elementsholder.ScrollingDirection = Enum.ScrollingDirection.Y
-    elementsholder.BackgroundTransparency = 1
-    elementsholder.BorderSizePixel = 0
-    elementsholder.Parent = Main
-
-    local UIListLayout = Instance.new("UIListLayout")
-    UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    UIListLayout.Padding = UDim.new(0, 3)
-    UIListLayout.Parent = elementsholder
-
-    local Elements = {}
-
-    function Elements:AddButton(Name, Call)
-        local Buttonholder = Instance.new("Frame")
-        Buttonholder.Name = "Buttonholder"
-        Buttonholder.Size = UDim2.new(1, 0, 0, 34)
-        Buttonholder.Position = UDim2.new(0, 0, 0, 0)
-        Buttonholder.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
-        Buttonholder.BorderColor3 = Color3.new(0, 0, 0)
-        Buttonholder.BorderSizePixel = 0
-        Buttonholder.Active = true
-        Buttonholder.BackgroundTransparency = 0 
-        Buttonholder.Parent = elementsholder
-        
-        local buttons = Instance.new("TextButton")
-        buttons.Name = "Button"
-        buttons.Size = UDim2.new(1, -4, 1, -4)
-        buttons.Position = UDim2.new(0, 2, 0, 2)
-        buttons.BackgroundColor3 = Color3.fromRGB(32, 32, 32)
-        buttons.BorderColor3 = Color3.new(0, 0, 0)
-        buttons.BorderSizePixel = 0
-        buttons.Text = Name
-        buttons.TextSize = 18
-        buttons.BackgroundTransparency = 0 
-        buttons.TextColor3 = Color3.new(255, 255, 255)
-        buttons.Font = Enum.Font.SciFi
-        buttons.TextXAlignment = Enum.TextXAlignment.Left
-        buttons.Parent = Buttonholder
-        
-        local Padding = Instance.new("UIPadding")
-        Padding.PaddingBottom = UDim.new(0, 6)
-        Padding.PaddingLeft = UDim.new(0, 6)
-        Padding.PaddingRight = UDim.new(0, 6)
-        Padding.PaddingTop = UDim.new(0, 6)
-        Padding.Parent = buttons
-
-        buttons.MouseButton1Click:Connect(function()
-            pcall(Call)
-        end)
-    end
-
-    function Elements:AddToggle(Name, Call)
-        -- Create the main holder frame
-        local ToggleHolder = Instance.new("Frame")
-        ToggleHolder.Name = "ToggleHolder"
-        ToggleHolder.Size = UDim2.new(1, 0, 0, 38)
-        ToggleHolder.Position = UDim2.new(0, 0, 0, 0)
-        ToggleHolder.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
-        ToggleHolder.BorderSizePixel = 0
-        ToggleHolder.Parent = elementsholder
-
-        -- Create the background frame for the toggle
-        local ToggleBackground = Instance.new("Frame")
-        ToggleBackground.Size = UDim2.new(1, -4, 1, -4)
-        ToggleBackground.Position = UDim2.new(0, 2, 0, 2)
-        ToggleBackground.BackgroundColor3 = Color3.fromRGB(32, 32, 32)
-        ToggleBackground.BorderSizePixel = 0
-        ToggleBackground.Parent = ToggleHolder
-
--- Create the title text label
-        local ToggleTitle = Instance.new("TextLabel")
-        ToggleTitle.Size = UDim2.new(0.9, 0, 1, 0)
-        ToggleTitle.Position = UDim2.new(0, 6, 0, 0)
-        ToggleTitle.BackgroundTransparency = 1
-        ToggleTitle.Text = Name
-        ToggleTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-        ToggleTitle.TextSize = 18
-        ToggleTitle.Font = Enum.Font.SciFi
-        ToggleTitle.TextXAlignment = Enum.TextXAlignment.Left
-        ToggleTitle.Parent = ToggleBackground
-
-        -- Create the toggle button
-        local ToggleButton = Instance.new("TextButton")
-        ToggleButton.Size = UDim2.new(0, 34, 0, 34)
-        ToggleButton.Position = UDim2.new(1, -38, 0, 2)
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-        ToggleButton.BorderSizePixel = 0
-        ToggleButton.Text = ""
-        ToggleButton.Parent = ToggleBackground
-
-        -- Create the button's toggle indicator
-        local Indicator = Instance.new("Frame")
-        Indicator.Size = UDim2.new(0, 14, 0, 14)
-        Indicator.Position = UDim2.new(0.5, -7, 0.5, -7)
-        Indicator.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-        Indicator.BorderSizePixel = 0
-        Indicator.Parent = ToggleButton
-
-        local isToggled = false
-        local function UpdateToggle()
-            if isToggled then
-                Indicator.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-            else
-                Indicator.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-            end
-        end
-
-        ToggleButton.MouseButton1Click:Connect(function()
-            isToggled = not isToggled
-            UpdateToggle()
-            pcall(Call, isToggled)
-        end)
-
-        -- Initial update
-        UpdateToggle()
-    end
-
-    function Window:CreateTab(Name)
-        local Tab = Instance.new("Frame")
-        Tab.Size = UDim2.new(1, 0, 1, 0)
-        Tab.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
-        Tab.BorderSizePixel = 0
-        Tab.Visible = false
-        Tab.Parent = Main
-
-        local tabName = Instance.new("TextLabel")
-        tabName.Size = UDim2.new(1, 0, 0, 30)
-        tabName.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        tabName.Text = Name
-        tabName.TextSize = 20
-        tabName.TextColor3 = Color3.fromRGB(255, 255, 255)
-        tabName.Font = Enum.Font.SciFi
-        tabName.Parent = Tab
-
-        local container = Instance.new("Frame")
-        container.Size = UDim2.new(1, 0, 1, -30)
-        container.Position = UDim2.new(0, 0, 0, 30)
-        container.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
-        container.BorderSizePixel = 0
-        container.Parent = Tab
-
-        local UIListLayout = Instance.new("UIListLayout")
-        UIListLayout.Parent = container
-        UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-        UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-        UIListLayout.Padding = UDim.new(0, 5)
-
-        return {
-            AddButton = function(Name, Call)
-                local Button = Instance.new("TextButton")
-                Button.Size = UDim2.new(1, -10, 0, 30)
-                Button.Position = UDim2.new(0, 5, 0, 5)
-                Button.BackgroundColor3 = Color3.fromRGB(32, 32, 32)
-                Button.BorderSizePixel = 0
-                Button.Text = Name
-                Button.TextSize = 18
-                Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-                Button.Font = Enum.Font.SciFi
-                Button.Parent = container
-
-                Button.MouseButton1Click:Connect(Call)
-            end,
-            AddToggle = function(Name, Call)
-                Elements:AddToggle(Name, Call)
-            end
-        }
-    end
+-- Create a Toggle
+function CustomUIHub:CreateToggle(text, onToggle)
+    local frame = createInstance("Frame", {
+        Parent = self.Parent,
+        Size = UDim2.new(0, 200, 0, 50),
+        BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    })
     
-    return {
-        CreateTab = Window.CreateTab
-    }
+    local label = createInstance("TextLabel", {
+        Parent = frame,
+        Size = UDim2.new(0.5, 0, 1, 0),
+        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+        TextColor3 = Color3.fromRGB(0, 0, 0),
+        Text = text,
+        TextScaled = true
+    })
+
+    local switch = createInstance("TextButton", {
+        Parent = frame,
+        Size = UDim2.new(0.5, 0, 1, 0),
+        Position = UDim2.new(0.5, 0, 0, 0),
+        BackgroundColor3 = Color3.fromRGB(0, 122, 204),
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        Text = "OFF",
+        TextScaled = true
+    })
+    
+    local toggled = false
+    switch.MouseButton1Click:Connect(function()
+        toggled = not toggled
+        switch.BackgroundColor3 = toggled and Color3.fromRGB(0, 204, 122) or Color3.fromRGB(0, 122, 204)
+        switch.Text = toggled and "ON" or "OFF"
+        onToggle(toggled)
+    end)
+    
+    table.insert(self.Elements, frame)
+    return frame
 end
 
-return Elements
+-- Create a Layout
+function CustomUIHub:CreateLayout()
+    local layout = createInstance("UIListLayout", {
+        Parent = self.Parent,
+        Padding = UDim.new(0, 10),
+        HorizontalAlignment = Enum.HorizontalAlignment.Center
+    })
+    return layout
 end
 
-return Window
-
-MakeDraggable(topbar, Main)
-MakeMinimize(Main, minimize)
+return CustomUIHub
