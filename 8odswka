@@ -1,4 +1,3 @@
--- CustomUIHubModuleScript
 local CustomUIHub = {}
 CustomUIHub.__index = CustomUIHub
 
@@ -12,73 +11,106 @@ local function createInstance(className, properties)
 end
 
 -- Initialize UI
-function CustomUIHub:Init(parent)
+function CustomUIHub:Init(parent, title)
     self.Parent = parent
-    self.Elements = {}
-end
-
--- Create a Button
-function CustomUIHub:CreateButton(text, onClick)
-    local button = createInstance("TextButton", {
+    self.Window = createInstance("Frame", {
         Parent = self.Parent,
-        Size = UDim2.new(0, 200, 0, 50),
+        Size = UDim2.new(0, 300, 0, 400),
+        BackgroundColor3 = Color3.fromRGB(40, 40, 40),
+        Position = UDim2.new(0.5, -150, 0.5, -200),
+        BorderSizePixel = 0
+    })
+    
+    local titleLabel = createInstance("TextLabel", {
+        Parent = self.Window,
+        Size = UDim2.new(1, 0, 0, 50),
         BackgroundColor3 = Color3.fromRGB(0, 122, 204),
         TextColor3 = Color3.fromRGB(255, 255, 255),
-        Text = text,
-        TextScaled = true
-    })
-    button.MouseButton1Click:Connect(onClick)
-    table.insert(self.Elements, button)
-    return button
-end
-
--- Create a Toggle
-function CustomUIHub:CreateToggle(text, onToggle)
-    local frame = createInstance("Frame", {
-        Parent = self.Parent,
-        Size = UDim2.new(0, 200, 0, 50),
-        BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Text = title,
+        TextScaled = true,
+        BorderSizePixel = 0
     })
     
-    local label = createInstance("TextLabel", {
-        Parent = frame,
-        Size = UDim2.new(0.5, 0, 1, 0),
-        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-        TextColor3 = Color3.fromRGB(0, 0, 0),
-        Text = text,
-        TextScaled = true
-    })
+    self.Sections = {}
+end
 
-    local switch = createInstance("TextButton", {
-        Parent = frame,
-        Size = UDim2.new(0.5, 0, 1, 0),
-        Position = UDim2.new(0.5, 0, 0, 0),
+-- Create a new Section
+function CustomUIHub:CreateSection(title)
+    local section = createInstance("Frame", {
+        Parent = self.Window,
+        Size = UDim2.new(1, 0, 0, 100),
+        BackgroundColor3 = Color3.fromRGB(50, 50, 50),
+        BorderSizePixel = 0
+    })
+    
+    local sectionTitle = createInstance("TextLabel", {
+        Parent = section,
+        Size = UDim2.new(1, 0, 0, 25),
         BackgroundColor3 = Color3.fromRGB(0, 122, 204),
         TextColor3 = Color3.fromRGB(255, 255, 255),
-        Text = "OFF",
-        TextScaled = true
+        Text = title,
+        TextScaled = true,
+        BorderSizePixel = 0
     })
     
-    local toggled = false
-    switch.MouseButton1Click:Connect(function()
-        toggled = not toggled
-        switch.BackgroundColor3 = toggled and Color3.fromRGB(0, 204, 122) or Color3.fromRGB(0, 122, 204)
-        switch.Text = toggled and "ON" or "OFF"
-        onToggle(toggled)
-    end)
-    
-    table.insert(self.Elements, frame)
-    return frame
-end
-
--- Create a Layout
-function CustomUIHub:CreateLayout()
     local layout = createInstance("UIListLayout", {
-        Parent = self.Parent,
+        Parent = section,
         Padding = UDim.new(0, 10),
         HorizontalAlignment = Enum.HorizontalAlignment.Center
     })
-    return layout
+
+    table.insert(self.Sections, section)
+    return {
+        CreateButton = function(self, text, onClick)
+            local button = createInstance("TextButton", {
+                Parent = section,
+                Size = UDim2.new(1, -20, 0, 50),
+                BackgroundColor3 = Color3.fromRGB(0, 122, 204),
+                TextColor3 = Color3.fromRGB(255, 255, 255),
+                Text = text,
+                TextScaled = true
+            })
+            button.MouseButton1Click:Connect(onClick)
+            return button
+        end,
+        
+        CreateToggle = function(self, text, onToggle)
+            local frame = createInstance("Frame", {
+                Parent = section,
+                Size = UDim2.new(1, -20, 0, 50),
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            })
+            
+            local label = createInstance("TextLabel", {
+                Parent = frame,
+                Size = UDim2.new(0.5, 0, 1, 0),
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                TextColor3 = Color3.fromRGB(0, 0, 0),
+                Text = text,
+                TextScaled = true
+            })
+
+            local switch = createInstance("TextButton", {
+                Parent = frame,
+                Size = UDim2.new(0.5, 0, 1, 0),
+                Position = UDim2.new(0.5, 0, 0, 0),
+                BackgroundColor3 = Color3.fromRGB(0, 122, 204),
+                TextColor3 = Color3.fromRGB(255, 255, 255),
+                Text = "OFF",
+                TextScaled = true
+            })
+            
+            local toggled = false
+            switch.MouseButton1Click:Connect(function()
+                toggled = not toggled
+                switch.BackgroundColor3 = toggled and Color3.fromRGB(0, 204, 122) or Color3.fromRGB(0, 122, 204)
+                switch.Text = toggled and "ON" or "OFF"
+                onToggle(toggled)
+            end)
+            
+            return frame
+        end
+    }
 end
 
 return CustomUIHub
