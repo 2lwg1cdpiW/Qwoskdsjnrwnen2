@@ -1,5 +1,9 @@
-local CustomUIHub = {}
-CustomUIHub.__index = CustomUIHub
+local Library = {}
+Library.__index = Library
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local CoreGui = game:GetService("CoreGui")
 
 -- Helper function to create a new instance
 local function createInstance(className, properties)
@@ -11,64 +15,66 @@ local function createInstance(className, properties)
 end
 
 -- Initialize UI
-function CustomUIHub:Init(parent, title)
-    self.Parent = parent
+function Library:Init(title)
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Parent = RunService:IsStudio() and Players.LocalPlayer:WaitForChild("PlayerGui") or CoreGui
+
     self.Window = createInstance("Frame", {
-        Parent = self.Parent,
-        Size = UDim2.new(0, 300, 0, 400),
+        Size = UDim2.new(0, 200, 0, 160),
         BackgroundColor3 = Color3.fromRGB(40, 40, 40),
-        Position = UDim2.new(0.5, -150, 0.5, -200),
-        BorderSizePixel = 0
+        Position = UDim2.new(0, 200, 0, 100),
+        BorderSizePixel = 0,
+        Parent = screenGui
     })
     
     local titleLabel = createInstance("TextLabel", {
-        Parent = self.Window,
         Size = UDim2.new(1, 0, 0, 50),
         BackgroundColor3 = Color3.fromRGB(0, 122, 204),
         TextColor3 = Color3.fromRGB(255, 255, 255),
         Text = title,
         TextScaled = true,
-        BorderSizePixel = 0
+        BorderSizePixel = 0,
+        Parent = self.Window
     })
     
     self.Sections = {}
 end
 
 -- Create a new Section
-function CustomUIHub:CreateSection(title)
+function Library:CreateSection(title)
     local section = createInstance("Frame", {
-        Parent = self.Window,
         Size = UDim2.new(1, 0, 0, 100),
         BackgroundColor3 = Color3.fromRGB(50, 50, 50),
-        BorderSizePixel = 0
+        BorderSizePixel = 0,
+        Parent = self.Window
     })
     
     local sectionTitle = createInstance("TextLabel", {
-        Parent = section,
         Size = UDim2.new(1, 0, 0, 25),
         BackgroundColor3 = Color3.fromRGB(0, 122, 204),
         TextColor3 = Color3.fromRGB(255, 255, 255),
         Text = title,
         TextScaled = true,
-        BorderSizePixel = 0
+        BorderSizePixel = 0,
+        Parent = section
     })
     
     local layout = createInstance("UIListLayout", {
-        Parent = section,
         Padding = UDim.new(0, 10),
-        HorizontalAlignment = Enum.HorizontalAlignment.Center
+        HorizontalAlignment = Enum.HorizontalAlignment.Center,
+        Parent = section
     })
 
     table.insert(self.Sections, section)
     return {
         CreateButton = function(self, text, onClick)
             local button = createInstance("TextButton", {
-                Parent = section,
                 Size = UDim2.new(1, -20, 0, 50),
                 BackgroundColor3 = Color3.fromRGB(0, 122, 204),
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 Text = text,
-                TextScaled = true
+                TextScaled = true,
+                Parent = section
             })
             button.MouseButton1Click:Connect(onClick)
             return button
@@ -76,28 +82,28 @@ function CustomUIHub:CreateSection(title)
         
         CreateToggle = function(self, text, onToggle)
             local frame = createInstance("Frame", {
-                Parent = section,
                 Size = UDim2.new(1, -20, 0, 50),
-                BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                Parent = section
             })
             
             local label = createInstance("TextLabel", {
-                Parent = frame,
                 Size = UDim2.new(0.5, 0, 1, 0),
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 TextColor3 = Color3.fromRGB(0, 0, 0),
                 Text = text,
-                TextScaled = true
+                TextScaled = true,
+                Parent = frame
             })
 
             local switch = createInstance("TextButton", {
-                Parent = frame,
                 Size = UDim2.new(0.5, 0, 1, 0),
                 Position = UDim2.new(0.5, 0, 0, 0),
                 BackgroundColor3 = Color3.fromRGB(0, 122, 204),
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 Text = "OFF",
-                TextScaled = true
+                TextScaled = true,
+                Parent = frame
             })
             
             local toggled = false
@@ -113,4 +119,4 @@ function CustomUIHub:CreateSection(title)
     }
 end
 
-return CustomUIHub
+return Library
