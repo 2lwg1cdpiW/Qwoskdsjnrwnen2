@@ -1,7 +1,7 @@
 local UILibrary = {}
 
 -- Function to create a draggable frame with only a title
-function UILibrary.Createlibrary(options)
+function UILibrary.CreateLibrary(options)
     local options = options or {}
     local titleText = options.titleText or "Title"
     
@@ -26,10 +26,7 @@ function UILibrary.Createlibrary(options)
 
     local title = Instance.new("TextLabel")
     title.Size = UDim2.new(1, 0, 1, 0)
-    title.Position = UDim2.new(0, 0, 0, 0)
     title.BackgroundColor3 = options.titleBackgroundColor or Color3.fromRGB(50, 50, 50)
-    title.BorderColor3 = Color3.new(0, 0, 0)
-    title.BorderSizePixel = 0
     title.Text = titleText
     title.TextSize = 18
     title.BackgroundTransparency = 0
@@ -37,42 +34,40 @@ function UILibrary.Createlibrary(options)
     title.Font = Enum.Font.GothamBold
     title.Parent = dragframe
     
-    -- Element holder tab
-    local holder = Instance.new("Frame")
-    holder.Size = UDim2.new(1, 0, 0, 200)
-    holder.Position = UDim2.new(0, 0, 0, 40)
-    holder.BackgroundColor3 = Color3.fromRGB(51, 51, 51)
-    holder.BorderColor3 = Color3.new(0, 0, 0)
-    holder.BorderSizePixel = 0
-    holder.Active = true
-    holder.BackgroundTransparency = 0 
-    holder.Parent = dragframe
+    -- Element tab
+    local elementsContainer = Instance.new("Frame")
+    elementsContainer.Size = UDim2.new(1, 0, 0, 200)
+    elementsContainer.BackgroundColor3 = Color3.fromRGB(51, 51, 51)
+    elementsContainer.BorderColor3 = Color3.new(0, 0, 0)
+    elementsContainer.BorderSizePixel = 0
+    elementsContainer.Active = true
+    elementsContainer.BackgroundTransparency = 0
+    elementsContainer.Parent = dragframe
     
-    local ui2 = Instance.new("UICorner")
+    local ui2 = Instance.new("UICorner", elementsContainer)
     ui2.CornerRadius = UDim.new(0, 1)
-    ui2.Parent = holder
     
     local elementholder = Instance.new("ScrollingFrame")
     elementholder.Size = UDim2.new(1, 0, 1, 0)
-    elementholder.Position = UDim2.new(0, 0, 0, 0)
     elementholder.BackgroundColor3 = Color3.new(1, 1, 1)
     elementholder.BorderColor3 = Color3.new(0, 0, 0)
     elementholder.BorderSizePixel = 0
     elementholder.ScrollBarThickness = 0
+    elementholder.Parent = elementsContainer
     elementholder.BackgroundTransparency = 1
-    elementholder.Parent = holder
     
-    local UIListLayout = Instance.new("UIListLayout")
+    local UIListLayout = Instance.new("UIListLayout", elementholder)
     UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
     UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     UIListLayout.Padding = UDim.new(0, 8)
-    UIListLayout.Parent = elementholder
     
-    return dragframe, elementholder
+    return dragframe
 end
 
+local elements = {}
+
 -- Function to create a button with customizable options and a callback
-function UILibrary.CreateButton(elementholder, options)
+function elements.CreateButton(options)
     local options = options or {}
     local buttonText = options.buttonText or "Button"
     local callback = options.callback or function() end
@@ -100,7 +95,7 @@ function UILibrary.CreateButton(elementholder, options)
     buttonLabel.TextSize = 14
     buttonLabel.BackgroundTransparency = 0
     buttonLabel.TextColor3 = Color3.new(255, 255, 255)
-    buttonLabel.TextXAlignment = Enum.TextXAlignment.Center
+    buttonLabel.TextXAlignment = Enum.TextXAlignment.Left
     buttonLabel.Font = Enum.Font.Gotham
     buttonLabel.Parent = button
 
