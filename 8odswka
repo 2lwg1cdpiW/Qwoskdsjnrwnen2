@@ -1,134 +1,95 @@
-local Library = {}
-Library.__index = Library
+-- UILibrary ModuleScript
 
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local CoreGui = game:GetService("CoreGui")
+local UILibrary = {}
 
--- Helper function to create a new instance
-local function createInstance(className, properties)
-    local instance = Instance.new(className)
-    for prop, value in pairs(properties) do
-        instance[prop] = value
-    end
-    return instance
+-- Function to create a draggable frame with only a title
+function UILibrary.CreateLibrary(options)
+    local options = options or {}
+    local titleText = options.titleText or "Title"
+    
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "CustomScreenGui"
+    ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+    local dragframe = Instance.new("Frame")
+    dragframe.Size = UDim2.new(0, 160, 0, 40)
+    dragframe.Position = UDim2.new(0.1, 0, 0.3, 0)
+    dragframe.BackgroundColor3 = options.frameColor or Color3.fromRGB(35, 35, 35)
+    dragframe.BorderColor3 = Color3.new(0, 0, 0)
+    dragframe.BorderSizePixel = 0
+    dragframe.Active = true
+    dragframe.BackgroundTransparency = 0
+    dragframe.Draggable = true
+    dragframe.Parent = ScreenGui
+
+    local ui = Instance.new("UICorner")
+    ui.CornerRadius = UDim.new(0, 6)
+    ui.Parent = dragframe
+
+    local title = Instance.new("TextLabel")
+    title.Size = UDim2.new(1, 0, 1, 0)
+    title.Position = UDim2.new(0, 0, 0, 0)
+    title.BackgroundColor3 = options.titleBackgroundColor or Color3.fromRGB(50, 50, 50)
+    title.BorderColor3 = Color3.new(0, 0, 0)
+    title.BorderSizePixel = 0
+    title.Text = titleText
+    title.TextSize = 18
+    title.BackgroundTransparency = 0
+    title.TextColor3 = options.titleTextColor or Color3.new(255, 255, 255)
+    title.Font = Enum.Font.GothamBold
+    title.Parent = dragframe
+
+    return dragframe
 end
 
--- Initialize UI
-function Library:Init(title)
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Parent = RunService:IsStudio() and Players.LocalPlayer:WaitForChild("PlayerGui") or CoreGui
+-- Function to create a button with customizable options and a callback
+function UILibrary.CreateButton(parent, options)
+    local options = options or {}
+    local buttonText = options.buttonText or "Button"
+    local callback = options.callback or function() end
+    
+    local button = Instance.new("Frame")
+    button.Size = UDim2.new(1, 0, 0, 38)
+    button.Position = UDim2.new(0, 0, 0, 0)
+    button.BackgroundColor3 = options.buttonColor or Color3.fromRGB(50, 50, 50)
+    button.BorderColor3 = Color3.new(0, 0, 0)
+    button.BorderSizePixel = 0
+    button.Active = true
+    button.BackgroundTransparency = 0
+    button.Parent = parent
 
-    self.Window = createInstance("Frame", {
-        Size = UDim2.new(0, 200, 0, 180),
-        BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-        Position = UDim2.new(0, 100, 0, 100),
-        BorderSizePixel = 0,
-        Parent = screenGui
-    })
+    local ui3 = Instance.new("UICorner")
+    ui3.CornerRadius = UDim.new(0, 6)
+    ui3.Parent = button
 
-    local titleLabel = createInstance("TextLabel", {
-        Size = UDim2.new(1, 0, 0, 30),
-        BackgroundColor3 = Color3.fromRGB(0, 102, 204),
-        TextColor3 = Color3.fromRGB(255, 255, 255),
-        Text = title,
-        TextScaled = true,
-        BorderSizePixel = 0,
-        Parent = self.Window
-    })
+    local buttonLabel = Instance.new("TextButton")
+    buttonLabel.Size = UDim2.new(1, -8, 1, -8)
+    buttonLabel.Position = UDim2.new(0, 4, 0, 4)
+    buttonLabel.BackgroundColor3 = options.labelBackgroundColor or Color3.fromRGB(60, 60, 60)
+    buttonLabel.BorderColor3 = Color3.new(0, 0, 0)
+    buttonLabel.BorderSizePixel = 0
+    buttonLabel.Text = buttonText
+    buttonLabel.TextSize = 14
+    buttonLabel.BackgroundTransparency = 0
+    buttonLabel.TextColor3 = options.labelTextColor or Color3.new(255, 255, 255)
+    buttonLabel.TextXAlignment = Enum.TextXAlignment.Left
+    buttonLabel.Font = Enum.Font.Gotham
+    buttonLabel.Parent = button
 
-    -- Create a UIListLayout to handle the layout of sections
-    self.Layout = createInstance("UIListLayout", {
-        Padding = UDim.new(0, 10),
-        SortOrder = Enum.SortOrder.LayoutOrder,
-        Parent = self.Window
-    })
+    local ui4 = Instance.new("UICorner")
+    ui4.CornerRadius = UDim.new(0, 6)
+    ui4.Parent = buttonLabel
 
-    self.Sections = {}
+    local uipadding = Instance.new("UIPadding")
+    uipadding.PaddingTop = UDim.new(0, 8)
+    uipadding.PaddingBottom = UDim.new(0, 8)
+    uipadding.PaddingLeft = UDim.new(0, 8)
+    uipadding.PaddingRight = UDim.new(0, 8)
+    uipadding.Parent = buttonLabel
+
+    buttonLabel.MouseButton1Click:Connect(callback)
+
+    return buttonLabel
 end
 
--- Create a new Section
-function Library:CreateSection(title)
-    local section = createInstance("Frame", {
-        Size = UDim2.new(1, 0, 0, 120),
-        BackgroundColor3 = Color3.fromRGB(40, 40, 40),
-        BorderSizePixel = 0,
-        LayoutOrder = #self.Sections + 1, -- Ensure sections are ordered
-        Parent = self.Window
-    })
-
-    local sectionTitle = createInstance("TextLabel", {
-        Size = UDim2.new(1, 0, 0, 30),
-        BackgroundColor3 = Color3.fromRGB(0, 102, 204),
-        TextColor3 = Color3.fromRGB(255, 255, 255),
-        Text = title,
-        TextScaled = true,
-        BorderSizePixel = 0,
-        Parent = section
-    })
-
-    local layout = createInstance("UIListLayout", {
-        Padding = UDim.new(0, 6),
-        HorizontalAlignment = Enum.HorizontalAlignment.Center,
-        SortOrder = Enum.SortOrder.LayoutOrder,
-        Parent = section
-    })
-
-    table.insert(self.Sections, section)
-
-    return {
-        CreateButton = function(self, text, onClick)
-            local button = createInstance("TextButton", {
-                Size = UDim2.new(1, -20, 0, 30),
-                BackgroundColor3 = Color3.fromRGB(0, 102, 204),
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                Text = text,
-                TextScaled = true,
-                LayoutOrder = #section:GetChildren() + 1, -- Ensure buttons are ordered within the section
-                Parent = section
-            })
-            button.MouseButton1Click:Connect(onClick)
-            return button
-        end,
-
-        CreateToggle = function(self, text, onToggle)
-            local frame = createInstance("Frame", {
-                Size = UDim2.new(1, -20, 0, 50),
-                BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-                LayoutOrder = #section:GetChildren() + 1, -- Ensure toggles are ordered within the section
-                Parent = section
-            })
-
-            local label = createInstance("TextLabel", {
-                Size = UDim2.new(1, 0, 0, 30),
-                BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-                TextColor3 = Color3.fromRGB(0, 0, 0),
-                Text = text,
-                TextScaled = true,
-                Parent = frame
-            })
-
-            local switch = createInstance("TextButton", {
-                Size = UDim2.new(0.5, 0, 1, 0),
-                Position = UDim2.new(0.5, 0, 0, 0),
-                BackgroundColor3 = Color3.fromRGB(0, 102, 204),
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                Text = "",
-                TextScaled = true,
-                Parent = frame
-            })
-
-            local toggled = false
-            switch.MouseButton1Click:Connect(function()
-                toggled = not toggled
-                switch.BackgroundColor3 = toggled and Color3.fromRGB(0, 204, 102) or Color3.fromRGB(0, 102, 204)
-                switch.Text = toggled and "ON" or "OFF"
-                onToggle(toggled)
-            end)
-
-            return frame
-        end
-    }
-end
-
-return Library
+return UILibrary
