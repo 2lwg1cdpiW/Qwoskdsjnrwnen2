@@ -1,0 +1,93 @@
+-- Define the Player variable
+local Player = game.Players.LocalPlayer
+
+-- Check for the gun in the player's Character or Backpack
+local function hasGun()
+    local character = Player.Character or Player.CharacterAdded:Wait()
+    local gun = character:FindFirstChild("M9") or Player.Backpack:FindFirstChild("M9")
+    return gun
+end
+
+-- Function to kill all players
+local function killall()
+    if not hasGun() then
+        print("No gun found, cannot proceed.")
+        return
+    end
+
+    local FireEvent = {}
+    for _, targetPlayer in ipairs(game.Players:GetPlayers()) do
+        if targetPlayer ~= Player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("Head") then
+            for i = 1, 8 do
+                table.insert(FireEvent, {
+                    ["RayObject"] = Ray.new(Player.Character.Head.Position, (targetPlayer.Character.Head.Position - Player.Character.Head.Position).unit * 300), 
+                    ["Distance"] = (targetPlayer.Character.Head.Position - Player.Character.Head.Position).magnitude, 
+                    ["Cframe"] = CFrame.new(targetPlayer.Character.Head.Position), 
+                    ["Hit"] = targetPlayer.Character.Head
+                })
+            end
+        end
+    end
+    local shootEvent = game:GetService("ReplicatedStorage"):FindFirstChild("ShootEvent")
+    if shootEvent then
+        shootEvent:FireServer(FireEvent, hasGun())
+    else
+        print("ShootEvent not found in ReplicatedStorage.")
+    end
+end
+
+-- Function to teleport to Criminal Spawn
+local function criminal()
+    local CriminalSpawn = game:GetService("Workspace")["Criminals Spawn"]
+    local Spawn = CriminalSpawn:GetChildren()
+
+    if #Spawn > 0 then
+        local randomIndex = math.random(1, #Spawn)
+        local randomLocation = Spawn[randomIndex]
+
+        local humanoidRootPart = Player.Character:FindFirstChild("HumanoidRootPart")
+        if humanoidRootPart then
+            local targetPosition = randomLocation.Position + Vector3.new(0, 5, 0) -- Adjust the Y coordinate to be 5 units above
+            humanoidRootPart.CFrame = CFrame.new(targetPosition)
+        end
+    end
+end
+
+-- Function to teleport and pick up M9 if not equipped
+local function m9tp()
+    local character = Player.Character or Player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    local originalPosition = humanoidRootPart.CFrame
+
+    -- Loop until the player has the gun
+    while not hasGun() do
+        humanoidRootPart.CFrame = CFrame.new(820.982239, 99.9640961, 2254.11084, 0.999995589, -0.000135344424, -0.00298830098, 0, 0.998975933, -0.0452450477, 0.00299136457, 0.0452448465, 0.998971403)
+        wait(0.5)
+        workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+        wait(0.1)
+    end
+
+    -- Return to the original position after getting the gun
+    humanoidRootPart.CFrame = originalPosition
+end
+
+local function ohio()
+    if not hasGun() then
+        m9tp()
+        wait(0.1)
+    end
+
+    killall()
+    wait(0.3)
+
+    -- Teleport to criminal spawn
+    criminal()
+    wait(0.3)
+
+    -- Execute killall again after teleporting
+    killall()
+    wait(.6)
+    Workspace.Remote.TeamEvent:FireServer("Bright orange")
+end
+
+ohio()
