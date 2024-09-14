@@ -82,11 +82,11 @@ local function ohio()
 
     -- Teleport to criminal spawn
     criminal()
-    wait(0.3)
+    wait(0.1)
 
     -- Execute killall again after teleporting
     killall()
-    wait(.6)
+    wait(.4)
     Workspace.Remote.TeamEvent:FireServer("Bright orange")
 end
 
