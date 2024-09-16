@@ -1,0 +1,133 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/2lwg1cdpiW/Qwoskdsjnrwnen2/main/Dj38ral20"))()
+_G.createNotification("Test Script by mark")
+wait(.7)
+_G.createNotification("please wait Deactivating the antiCheat..")
+wait(.7)
+game.Workspace.AntiCheat.Disabled = true
+_G.createNotification("the anticheat has been deactivate")
+wait(.5)
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
+
+local Window = Library:NewWindow(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
+
+local function updateWindowName()
+    local newGameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+    Window:SetTitle(newGameName)
+end
+
+game:GetPropertyChangedSignal("Name"):Connect(updateWindowName)
+
+local gg = Window:NewSection("FPS modifier")
+local vv = Window:NewSection("Kinda Realistic FPS")
+local oo = Window:NewSection("Negative FPS")
+local kk = Window:NewSection("YT: Markk")
+
+
+game.ReplicatedStorage.FPSUpdateEventIKnowYouReCheater.Name = "Arigato"
+
+local fpsd = false
+local normal = 0
+_G.maxiLimit = 5000
+
+gg:CreateTextbox("max is 5000", function(inputText)
+    normal = math.min(tonumber(inputText) or 0, _G.maxiLimit)
+end)
+
+gg:CreateToggle("Show Fake Fps", function(value)
+    fpsd = value
+end)
+
+coroutine.wrap(function()
+    while true do
+        if fpsd then 
+            local args = { normal }
+            game:GetService("ReplicatedStorage"):WaitForChild("Arigato"):FireServer(unpack(args))
+            wait(.01)
+        else
+            wait()
+        end
+    end
+end)()
+
+local fpsm = false
+local realistic = 0 
+_G.maxLimit = 5000
+
+vv:CreateTextbox("Max is 5000", function(inputText)
+    realistic = math.min(tonumber(inputText) or 0, _G.maxLimit)
+end)
+
+vv:CreateToggle("Show Realistic Fps", function(value)
+    fpsm = value
+end)
+
+coroutine.wrap(function()
+    while true do
+        if fpsm then
+            local decreaseAmount = math.random(1, 4)
+            local previousNumber = realistic
+            local newNumber = math.max(realistic - decreaseAmount, 0)
+
+            local args = {tostring(newNumber)}
+            game:GetService("ReplicatedStorage"):WaitForChild("Arigato"):FireServer(unpack(args))
+            
+            wait(.01)
+            args = {tostring(previousNumber)}
+            game:GetService("ReplicatedStorage"):WaitForChild("Arigato"):FireServer(unpack(args))
+        else
+            wait()
+        end
+    end
+end)()
+
+local feps = false
+local negative = 0
+local maxiLimit = -500
+
+oo:CreateTextbox("max is 500", function(inputText)
+    local num = tonumber(inputText)
+    if num then
+        normal = math.max(math.min(num, -maxiLimit), maxiLimit)
+        negative = -normal
+    end
+end)
+
+oo:CreateToggle("Show Negative Fps", function(value)
+    feps = value
+end)
+
+coroutine.wrap(function()
+    while true do
+        if feps then
+            local args = { negative }
+            game:GetService("ReplicatedStorage"):WaitForChild("Arigato"):FireServer(unpack(args))
+            wait(0.01)
+        else
+            wait()
+        end
+    end
+end)()
+
+oo:CreateToggle("Fake lag", function(value)
+    fakelag = value
+end)
+
+coroutine.wrap(function()
+    while true do
+        wait(0.1)
+        if fakelag then
+            local player = game.Players.LocalPlayer
+            local character = player.Character or player.CharacterAdded:Wait()
+            local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+            
+            humanoidRootPart.Anchored = true
+            wait(0.5)
+            humanoidRootPart.Anchored = false
+        end
+    end
+end)()
+
+kk:CreateButton("YouTube Link", function()
+  setclipboard("https://youtube.com/@M4rkk3")
+end)
