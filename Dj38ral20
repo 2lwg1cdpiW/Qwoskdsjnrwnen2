@@ -1,10 +1,11 @@
-local function sendnotif(title)
+-- Define the function as a global function
+_G.sendnotif = function(title)
     local TweenService = game:GetService("TweenService")
     local screenGui = Instance.new("ScreenGui")
     screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
     local textlabel = Instance.new("TextLabel")
-    textlabel.Size = UDim2.new(0, 1, 0, 35)
+    textlabel.Size = UDim2.new(0, 135, 0, 35)
     textlabel.Position = UDim2.new(0.5, 0, 0.2, 0)
     textlabel.AnchorPoint = Vector2.new(0.5, 0.5)
     textlabel.BackgroundColor3 = Color3.fromRGB(46, 46, 46)
@@ -13,7 +14,7 @@ local function sendnotif(title)
     textlabel.Text = title
     textlabel.TextSize = 14
     textlabel.BackgroundTransparency = 0 
-    textlabel.TextColor3 = Color3.new(255, 255, 255)
+    textlabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     textlabel.Font = Enum.Font.SciFi
     textlabel.Parent = screenGui
 
