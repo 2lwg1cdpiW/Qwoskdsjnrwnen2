@@ -1,46 +1,48 @@
-local Players = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
-
-_G.createNotification = function(message)
-    local player = Players.LocalPlayer
-    local playerGui = player:WaitForChild("PlayerGui")
-
+local function sendnotif(title)
+    local TweenService = game:GetService("TweenService")
     local screenGui = Instance.new("ScreenGui")
-    screenGui.Parent = playerGui
+    screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
-    local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0, 300, 0, 55)
-    frame.Position = UDim2.new(0.5, -150, 1, -120)
-    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    frame.BackgroundTransparency = 0.3
-    frame.Parent = screenGui
+    local textlabel = Instance.new("TextLabel")
+    textlabel.Size = UDim2.new(0, 1, 0, 35)
+    textlabel.Position = UDim2.new(0.5, 0, 0.2, 0)
+    textlabel.AnchorPoint = Vector2.new(0.5, 0.5)
+    textlabel.BackgroundColor3 = Color3.fromRGB(46, 46, 46)
+    textlabel.BorderColor3 = Color3.new(0, 0, 0)
+    textlabel.BorderSizePixel = 0
+    textlabel.Text = title
+    textlabel.TextSize = 14
+    textlabel.BackgroundTransparency = 0 
+    textlabel.TextColor3 = Color3.new(255, 255, 255)
+    textlabel.Font = Enum.Font.SciFi
+    textlabel.Parent = screenGui
 
-    local uiCorner = Instance.new("UICorner")
-    uiCorner.CornerRadius = UDim.new(0, 14)
-    uiCorner.Parent = frame
+    local uic = Instance.new("UICorner")
+    uic.CornerRadius = UDim.new(0, 5)
+    uic.Parent = textlabel
 
-    local textLabel = Instance.new("TextLabel")
-    textLabel.Size = UDim2.new(1, -20, 1, -20)
-    textLabel.Position = UDim2.new(0, 10, 0, 10)
-    textLabel.BackgroundTransparency = 1
-    textLabel.Text = message
-    textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    textLabel.Font = Enum.Font.Gotham
-    textLabel.TextSize = 18
-    textLabel.TextWrapped = true
-    textLabel.Parent = frame
+    local uis = Instance.new("UIStroke")
+    uis.Color = Color3.fromRGB(30, 30, 30)
+    uis.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    uis.Thickness = 1.5
+    uis.Parent = textlabel
 
-    local slideIn = TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, -150, 0.9, -120)})
-    slideIn:Play()
+    local originalSize = UDim2.new(0, 135, 0, 35)
+    local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
-    wait(3)
+    local sizeTween = TweenService:Create(textlabel, tweenInfo, {Size = originalSize})
+    sizeTween:Play()
+    sizeTween.Completed:Wait()
 
-    local fadeOutFrame = TweenService:Create(frame, TweenInfo.new(1), {BackgroundTransparency = 1})
-    local fadeOutText = TweenService:Create(textLabel, TweenInfo.new(1), {TextTransparency = 1})
+    wait(2)
 
-    fadeOutFrame:Play()
+    local fadeOutText = TweenService:Create(textlabel, TweenInfo.new(0.4), {BackgroundTransparency = 1, TextTransparency = 1})
+    local fadeOutStroke = TweenService:Create(uis, TweenInfo.new(0.4), {Transparency = 1})
+
     fadeOutText:Play()
+    fadeOutStroke:Play()
 
-    fadeOutFrame.Completed:Wait()
+    fadeOutText.Completed:Wait()
+
     screenGui:Destroy()
 end
