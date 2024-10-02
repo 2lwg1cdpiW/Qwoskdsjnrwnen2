@@ -29,7 +29,7 @@ _G.sendnotif = function(title)
     uis.Parent = textlabel
 
     local originalSize = UDim2.new(0, 135, 0, 35)
-    local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
     local sizeTween = TweenService:Create(textlabel, tweenInfo, {Size = originalSize})
     sizeTween:Play()
